@@ -10,13 +10,13 @@ func _check(condition: bool, message: String) -> void:
 		failures.append(message)
 
 func _run() -> void:
-	var packed = load("res://scenes/Main.tscn")
+	var packed: PackedScene = load("res://scenes/Main.tscn") as PackedScene
 	_check(packed != null, "Main.tscn não carregou")
 	if packed == null:
 		_finish()
 		return
 
-	var instance = packed.instantiate()
+	var instance: Node = packed.instantiate()
 	get_root().add_child(instance)
 	paused = false
 	await process_frame
@@ -30,12 +30,12 @@ func _run() -> void:
 	_check(CaseManager.validate_timeline(["ev_pf_2024", "ev_stf_judgment_2025", "ev_anpp_2026"]), "Timeline correta foi recusada")
 	_check(not CaseManager.validate_timeline(["ev_stf_judgment_2025", "ev_pf_2024", "ev_anpp_2026"]), "Timeline errada foi aceita")
 
-	var correct_status := {
+	var correct_status: Dictionary = {
 		"ev_pf_2024": "ALEGAÇÃO_OFICIAL",
 		"ev_stf_judgment_2025": "DECISÃO_JUDICIAL",
 		"ev_fiction_draft": "FICÇÃO_DRAMÁTICA"
 	}
-	var wrong_status := correct_status.duplicate()
+	var wrong_status: Dictionary = correct_status.duplicate()
 	wrong_status["ev_pf_2024"] = "DECISÃO_JUDICIAL"
 	_check(CaseManager.validate_status(correct_status), "Classificação correta foi recusada")
 	_check(not CaseManager.validate_status(wrong_status), "Classificação errada foi aceita")
