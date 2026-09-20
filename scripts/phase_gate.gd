@@ -14,6 +14,9 @@ func _process(_delta: float) -> void:
 func is_unlocked() -> bool:
 	return _unlocked
 
+func sync_now() -> void:
+	_sync_state(true)
+
 func _sync_state(force: bool) -> void:
 	var next_state := GameState.status_solved
 	if not force and next_state == _unlocked:

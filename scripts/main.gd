@@ -11,6 +11,7 @@ const STATUS_DISPLAY := {
 @onready var investigator = $Investigator
 @onready var hotspots_root = $Hotspots
 @onready var reconstruction_root = $Reconstruction
+@onready var phase_gate = $PhaseGate
 @onready var ui_root = $UI
 
 var prompt_label: Label
@@ -530,6 +531,7 @@ func _validate_status() -> void:
 		return
 	GameState.status_solved = true
 	GameState.slice_complete = false
+	phase_gate.call("sync_now")
 	SaveManager.save_game()
 	AudioManager.play_success()
 	board_panel.visible = false

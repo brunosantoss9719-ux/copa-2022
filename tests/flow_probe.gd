@@ -44,6 +44,7 @@ func _run() -> void:
 	var phase_gate: Node = main.get_node("PhaseGate")
 	investigator.position.x = 2760.0
 	await get_tree().physics_frame
+	await get_tree().process_frame
 	_check(investigator.position.x <= 2050.1, "Ala II acessível antes da classificação")
 	_check(not bool(phase_gate.call("is_unlocked")), "Porta da ala II começou liberada")
 
@@ -83,12 +84,12 @@ func _run() -> void:
 	main.call("_validate_status")
 	_check(GameState.status_solved, "Classificação correta não liberou a segunda ala")
 	_check(not GameState.slice_complete, "Slice terminou antes do rastro documental")
-	await get_tree().process_frame
 	_check(bool(phase_gate.call("is_unlocked")), "Marco visual da ala II não foi liberado")
 	var phase_banner: PanelContainer = main.get("phase_banner") as PanelContainer
 	_check(phase_banner != null and phase_banner.visible, "Transição ARQUIVO II não foi exibida")
 	investigator.position.x = 2760.0
 	await get_tree().physics_frame
+	await get_tree().process_frame
 	_check(investigator.position.x > 2050.0, "Limite físico da ala II não abriu")
 	main.call("_open_board")
 	await get_tree().process_frame
