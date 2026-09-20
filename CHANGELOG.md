@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.2.1 — polimento da segunda ala
+- Ala II agora fica fisicamente inacessível até a conclusão do Puzzle 2.
+- Marco visual procedural “ARQUIVO II” mostra acesso pendente/liberado.
+- Transição curta de tela anuncia a liberação da nova ala.
+- Ao abrir o quadro com o Puzzle 3 ativo, a rolagem foca automaticamente essa seção.
+- FlowProbe passa a validar bloqueio/liberação, transição e foco do quadro.
+- Nenhum claim, solução factual ou conteúdo político foi alterado.
+- CI/artifact serão registrados após validação.
+
+
 ## 0.2.0 — rastro documental de “Copa 2022”
 - Segunda ala da Sala de Evidências liberada após a classificação factual.
 - Três novas evidências oficiais auditáveis (LS-F006 a LS-F008).

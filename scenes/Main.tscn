@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/environment_layer.gd" id="2_env"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="3_player"]
+[ext_resource type="Script" path="res://scripts/phase_gate.gd" id="4_gate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(30, 86)
@@ -27,6 +28,29 @@ z_index = -10
 script = ExtResource("2_env")
 depth_factor = 1.0
 layer_kind = "near"
+
+[node name="PhaseGate" type="Node2D" parent="."]
+position = Vector2(2080, 0)
+z_index = 4
+script = ExtResource("4_gate")
+
+[node name="Title" type="Label" parent="PhaseGate"]
+offset_left = -112.0
+offset_top = 346.0
+offset_right = 112.0
+offset_bottom = 380.0
+text = "ARQUIVO II"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="State" type="Label" parent="PhaseGate"]
+offset_left = -132.0
+offset_top = 382.0
+offset_right = 132.0
+offset_bottom = 414.0
+text = "ACESSO PENDENTE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
 
 [node name="Hotspots" type="Node2D" parent="."]
 

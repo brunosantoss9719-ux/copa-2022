@@ -40,6 +40,12 @@ func _run() -> void:
 
 	main.call("_new_game")
 	_check(not get_tree().paused, "Novo jogo não liberou a cena")
+	var investigator: CharacterBody2D = main.get_node("Investigator") as CharacterBody2D
+	var phase_gate: Node = main.get_node("PhaseGate")
+	investigator.position.x = 2760.0
+	await get_tree().physics_frame
+	_check(investigator.position.x <= 2050.1, "Ala II acessível antes da classificação")
+	_check(not bool(phase_gate.call("is_unlocked")), "Porta da ala II começou liberada")
 
 	_collect(main, [
 		"ev_pf_2024",
@@ -77,6 +83,19 @@ func _run() -> void:
 	main.call("_validate_status")
 	_check(GameState.status_solved, "Classificação correta não liberou a segunda ala")
 	_check(not GameState.slice_complete, "Slice terminou antes do rastro documental")
+	await get_tree().process_frame
+	_check(bool(phase_gate.call("is_unlocked")), "Marco visual da ala II não foi liberado")
+	var phase_banner: PanelContainer = main.get("phase_banner") as PanelContainer
+	_check(phase_banner != null and phase_banner.visible, "Transição ARQUIVO II não foi exibida")
+	investigator.position.x = 2760.0
+	await get_tree().physics_frame
+	_check(investigator.position.x > 2050.0, "Limite físico da ala II não abriu")
+	main.call("_open_board")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var board_scroll: ScrollContainer = main.get("board_scroll") as ScrollContainer
+	_check(board_scroll != null and board_scroll.scroll_vertical > 0, "Quadro não focou automaticamente o Puzzle 3")
+	main.call("_close_board")
 
 	_collect(main, ["ev_pet13236_2024", "ev_denuncia_received_2025", "ev_pgr_argument_2025"])
 	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências 0.2")

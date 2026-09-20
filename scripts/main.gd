@@ -23,6 +23,8 @@ var evidence_summary: Label
 var evidence_source: Label
 var evidence_note: Label
 var board_panel: PanelContainer
+var board_scroll: ScrollContainer
+var origin_anchor: Control
 var board_feedback: Label
 var board_progress: Label
 var timeline_options: Array[OptionButton] = []
@@ -33,6 +35,8 @@ var origin_options: Array[OptionButton] = []
 var origin_validate_button: Button
 var conclusion_panel: PanelContainer
 var conclusion_text: Label
+var phase_banner: PanelContainer
+var phase_banner_label: Label
 var current_focus = null
 
 func _enter_tree() -> void:
@@ -126,6 +130,7 @@ func _build_ui() -> void:
 	toast_label.visible = false
 	ui_root.add_child(toast_label)
 
+	_build_phase_banner()
 	_build_start_panel()
 	_build_evidence_panel()
 	_build_board_panel()
@@ -172,6 +177,16 @@ func _make_margin() -> MarginContainer:
 	margin.add_theme_constant_override("margin_top", 24)
 	margin.add_theme_constant_override("margin_bottom", 24)
 	return margin
+
+func _build_phase_banner() -> void:
+	phase_banner = _make_panel(Vector2(350, 72), Vector2(580, 94), Color(0.025, 0.075, 0.09, 0.96))
+	phase_banner.visible = false
+	ui_root.add_child(phase_banner)
+	var margin := _make_margin()
+	phase_banner.add_child(margin)
+	phase_banner_label = _make_label("ARQUIVO II — RASTRO DOCUMENTAL\nAcesso liberado. Siga à direita.", 20)
+	phase_banner_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	phase_banner.add_child(phase_banner_label)
 
 func _build_start_panel() -> void:
 	start_panel = _make_panel(Vector2(335, 165), Vector2(610, 390), Color(0.025, 0.055, 0.075, 0.97))
@@ -229,12 +244,12 @@ func _build_board_panel() -> void:
 	margin.add_theme_constant_override("margin_top", 18)
 	margin.add_theme_constant_override("margin_bottom", 18)
 	board_panel.add_child(margin)
-	var scroll := ScrollContainer.new()
-	margin.add_child(scroll)
+	board_scroll = ScrollContainer.new()
+	margin.add_child(board_scroll)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 8)
 	box.custom_minimum_size = Vector2(1050, 0)
-	scroll.add_child(box)
+	board_scroll.add_child(box)
 	box.add_child(_make_label("QUADRO DO CASO", 28, false))
 	board_progress = _make_label("", 15)
 	box.add_child(board_progress)
@@ -285,6 +300,9 @@ func _build_board_panel() -> void:
 	status_action_row.add_child(hint_status)
 	box.add_child(HSeparator.new())
 
+	origin_anchor = Control.new()
+	origin_anchor.custom_minimum_size = Vector2(0, 2)
+	box.add_child(origin_anchor)
 	box.add_child(_make_label("Puzzle 3 — rastro documental de ‘Copa 2022’", 20, false))
 	box.add_child(_make_label("Preencha os três papéis documentais. Uma peça da acusação é relevante, mas não substitui o julgamento.", 14))
 	for prompt_text in CaseManager.ORIGIN_PROMPTS:
@@ -398,6 +416,12 @@ func _open_board() -> void:
 	board_panel.visible = true
 	AudioManager.play_ui()
 	_pause_for_ui(true)
+	if GameState.status_solved and not GameState.origin_solved:
+		call_deferred("_focus_origin_section")
+
+func _focus_origin_section() -> void:
+	if board_panel.visible and board_scroll != null and origin_anchor != null:
+		board_scroll.ensure_control_visible(origin_anchor)
 
 func _close_board() -> void:
 	board_panel.visible = false
@@ -511,6 +535,7 @@ func _validate_status() -> void:
 	board_panel.visible = false
 	_pause_for_ui(false)
 	_spawn_evidence()
+	_show_phase_banner()
 	_show_toast("Classificação sustentada. Uma segunda ala documental foi liberada à direita.")
 	_refresh_world_state()
 
@@ -552,6 +577,13 @@ func _pause_for_ui(paused_value: bool) -> void:
 	get_tree().paused = paused_value
 	if investigator != null:
 		investigator.set_controls_enabled(not paused_value)
+
+func _show_phase_banner() -> void:
+	phase_banner.visible = true
+	var timer := get_tree().create_timer(2.8, true)
+	timer.timeout.connect(func():
+		phase_banner.visible = false
+	)
 
 func _show_toast(message: String) -> void:
 	toast_label.text = message
