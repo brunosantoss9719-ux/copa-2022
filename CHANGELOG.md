@@ -8,7 +8,10 @@
 - Mundo lateral ampliado sem trocar a arquitetura 2D/2.5D.
 - Save compatível com saves 0.1; conclusão antiga deixa de ser considerada final até o novo puzzle ser resolvido.
 - Smoke e FlowProbe ampliados para o caminho 0.2.
-- Artifact/CI serão registrados após validação.
+- Validate run 35541790873: SUCCESS.
+- Build Windows run 35541790892: SUCCESS.
+- Artifact: `linha-de-sombra-0.2.0-d35fc99`.
+- Commit validado: `d35fc99277f13d3dd5a63f034c499cdf23785de4`.
 
 ## 0.1.0 — primeira execução
 - Fundação Godot 4.7.2-stable.
