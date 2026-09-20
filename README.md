@@ -3,13 +3,21 @@
 Thriller investigativo 2.5D em Godot sobre reconstrução documental de acontecimentos ligados aos nomes públicos “Copa 2022” e “Punhal Verde e Amarelo”.
 
 ## Estado
-Projeto iniciado em Godot 4.7.2-stable, GDScript, com Windows x86_64 como build de referência.
+Primeira fatia vertical em Godot 4.7.2-stable, GDScript, com Windows x86_64 como build de referência.
+
+## Executar
+1. Instale Godot 4.7.2-stable.
+2. Abra project.godot ou rode godot --path ..
+3. Teclado: A/D ou setas movem; E interage; Tab abre o quadro; H pede dica; Esc fecha painéis.
+4. Controle: analógico/direcional move; A interage; Y abre o quadro; RB pede dica.
+
+## Loop demonstrado
+Explorar → observar → coletar → cruzar → reconstruir → formular hipótese → validar → atualizar o caso.
 
 ## Princípios
-- investigação por observação e dedução;
 - personagem jogável fictícia/composta da Polícia Federal;
-- fatos reais com `source_id` e status factual auditável;
+- fatos reais com source_id e status factual auditável;
 - reconstruções explicitamente dramatizadas;
-- nenhuma mecânica de execução/otimização de violência política.
+- sem mecânica de execução ou otimização de violência política.
 
-Consulte `PROJECT_STATE.md` para retomada e `SOURCES.md` para o espelho do ledger factual.
+Consulte PROJECT_STATE.md para retomada e SOURCES.md para o espelho do ledger factual.
