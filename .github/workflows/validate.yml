@@ -28,3 +28,6 @@ jobs:
 
       - name: Smoke tests
         run: godot --headless --path . --scene res://tests/Smoke.tscn
+
+      - name: Critical-path flow probe
+        run: godot --headless --path . --scene res://tests/FlowProbe.tscn
