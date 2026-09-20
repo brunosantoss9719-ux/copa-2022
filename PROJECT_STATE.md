@@ -1,51 +1,47 @@
 # PROJECT_STATE
 
 ## Snapshot
-Versão: 0.1.0
+Versão: 0.2.0
 Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
 Target: Windows x86_64
-Commit de software/build validado: 73796c7f7d99a6ad1b30e8e849288e3c89639ef6
+Commit de software/build validado: d35fc99277f13d3dd5a63f034c499cdf23785de4
 
 ## Estado implementado
-- sala investigativa lateral 2.5D com parallax procedural;
+- sala investigativa lateral 2.5D com parallax procedural e segunda ala desbloqueável;
 - movimentação por teclado e controle;
-- seis evidências data-driven com source/status;
-- caderno/quadro funcional;
+- nove evidências data-driven com source/status;
 - Puzzle 1: cronologia documental;
 - reconstrução curta no espaço da sala;
 - Puzzle 2: classificação factual;
-- conclusão narrativa provisória;
-- save/load versionado;
-- áudio procedural: ambiência, passos, UI e descoberta;
-- smoke canônico e flow probe ponta a ponta;
-- workflows de validação/build Windows.
+- Puzzle 3: rastro documental de “Copa 2022”;
+- distinção jogável entre investigação, recebimento da denúncia, posição da acusação e julgamento;
+- conclusão narrativa 0.2;
+- save/load compatível com saves 0.1;
+- áudio procedural;
+- smoke e FlowProbe cobrindo o caminho completo;
+- CI/build Windows.
 
 ## Fatos usados
-O slice usa somente claims espelhados em SOURCES.md. A sala, a investigadora e o rascunho interno são FICÇÃO_DRAMÁTICA.
+O 0.2 acrescenta LS-F006 a LS-F008 ao ledger. O jogo trata como alegação oficial o conteúdo atribuído à PF e à PGR, e como decisão judicial os marcos processuais/julgamento documentados. A sala e a investigadora permanecem FICÇÃO_DRAMÁTICA.
 
 ## Validação automática confirmada
-Validate run 35518660928: SUCCESS.
-Build Windows run 35518660807: SUCCESS.
-Smoke: SMOKE_OK.
-Flow probe: FLOW_OK — abertura → novo jogo → seis evidências → cronologia → reconstrução 3/3 → classificação factual → relatório final → save.
+Validate run 35541790873: SUCCESS.
+Build Windows run 35541790892: SUCCESS.
+Smoke: sucesso — Main, 9 evidências/source IDs, três puzzles e save/load.
+FlowProbe: sucesso — abertura → primeira ala → cronologia → reconstrução → classificação → segunda ala → três novas evidências → rastro documental → relatório final → save.
 
 ## Build
-Artifact: linha-de-sombra-0.1.0-73796c7
-Artifact ID: 10607757057
-Tamanho do ZIP: 38.970.471 bytes
-SHA-256 do artifact: 53a3a7166cf5cd3b55410f867488a318dd4ad1cca96c12d457f3ab54bd081aad
+Artifact: linha-de-sombra-0.2.0-d35fc99
+Artifact ID: 10615515801
+Tamanho do ZIP: 38.974.796 bytes
+SHA-256: 609aad97198c2cb0e2d15d848b21f9bf50a5b41fcc97bfca3d2d64a655c6cdcc
 Retenção observada: até 04/10/2026.
-Build produzida a partir do commit 73796c7f7d99a6ad1b30e8e849288e3c89639ef6.
-
-## Correções/fortalecimento de CI
-1. AudioManager tipado explicitamente para ficar warning-clean na Godot 4.7.2.
-2. Smoke roda como cena do projeto, preservando autoloads.
-3. FlowProbe.tscn percorre programaticamente o caminho crítico completo antes de liberar a exportação Windows.
+Build produzida a partir do commit d35fc99277f13d3dd5a63f034c499cdf23785de4.
 
 ## Limitação humana
-A automação confirma funcionamento lógico/runtime, mas não mede conforto do áudio, legibilidade visual percebida, sensação do controle, ritmo ou qualidade subjetiva das deduções.
+Ainda falta playtest humano para legibilidade percebida, conforto do áudio, sensação do controle, rolagem do quadro e ritmo dos três puzzles.
 
 ## Próxima ação canônica
-Playtest humano da build 0.1.0 no Windows, registrando em 09 — PLAYTESTS E PROBLEMAS apenas problemas observáveis. Se não houver bloqueador, iniciar o próximo incremento documental do Caso 1 sobre a origem/encadeamento da expressão “Copa 2022”.
+Playtest humano da build 0.2.0 no Windows. Se não houver bloqueador, o próximo incremento é melhorar apresentação/ritmo da segunda ala e iniciar o próximo bloco documental do Caso 1 somente após nova verificação factual.
