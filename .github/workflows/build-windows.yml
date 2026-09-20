@@ -36,6 +36,9 @@ jobs:
           godot --headless --path . --import
           godot --headless --path . --scene res://tests/Smoke.tscn
 
+      - name: Critical-path flow probe
+        run: godot --headless --path . --scene res://tests/FlowProbe.tscn
+
       - name: Export Windows x86_64
         id: export
         run: |
