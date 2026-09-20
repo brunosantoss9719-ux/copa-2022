@@ -6,7 +6,7 @@ Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
 Target: Windows x86_64
-Commit de software/build validado: e0bb85a15450c9cf788477c557a7ce25a8555c21
+Commit de software/build validado: 73796c7f7d99a6ad1b30e8e849288e3c89639ef6
 
 ## Estado implementado
 - sala investigativa lateral 2.5D com parallax procedural;
@@ -19,31 +19,33 @@ Commit de software/build validado: e0bb85a15450c9cf788477c557a7ce25a8555c21
 - conclusão narrativa provisória;
 - save/load versionado;
 - áudio procedural: ambiência, passos, UI e descoberta;
-- smoke tests e workflows de validação/build Windows.
+- smoke canônico e flow probe ponta a ponta;
+- workflows de validação/build Windows.
 
 ## Fatos usados
 O slice usa somente claims espelhados em SOURCES.md. A sala, a investigadora e o rascunho interno são FICÇÃO_DRAMÁTICA.
 
 ## Validação automática confirmada
-Validate run 35518386903: SUCCESS.
-Build Windows run 35518386912: SUCCESS.
-Smoke canônico: res://tests/Smoke.tscn, executado dentro do contexto normal do projeto.
-Cobertura do smoke: Main.tscn, EvidenceDB/source IDs, soluções corretas/incorretas dos dois puzzles e round-trip básico de save/load.
+Validate run 35518660928: SUCCESS.
+Build Windows run 35518660807: SUCCESS.
+Smoke: SMOKE_OK.
+Flow probe: FLOW_OK — abertura → novo jogo → seis evidências → cronologia → reconstrução 3/3 → classificação factual → relatório final → save.
 
 ## Build
-Artifact: linha-de-sombra-0.1.0-e0bb85a
-Artifact ID: 10607512143
-Tamanho do ZIP: 38.966.655 bytes
-SHA-256 do artifact: 08f8b6e6cfd845ee422fb0735f15d4fcc5d078b52f7c411fb2fb41f01b3f33aa
+Artifact: linha-de-sombra-0.1.0-73796c7
+Artifact ID: 10607757057
+Tamanho do ZIP: 38.970.471 bytes
+SHA-256 do artifact: 53a3a7166cf5cd3b55410f867488a318dd4ad1cca96c12d457f3ab54bd081aad
 Retenção observada: até 04/10/2026.
-Build produzida a partir do commit e0bb85a15450c9cf788477c557a7ce25a8555c21.
+Build produzida a partir do commit 73796c7f7d99a6ad1b30e8e849288e3c89639ef6.
 
-## Correções de CI desta sessão
-1. Tipagem explícita no AudioManager para ficar warning-clean na Godot 4.7.2.
-2. Smoke deixou de rodar como script isolado e passou a rodar como cena do projeto, preservando autoloads.
+## Correções/fortalecimento de CI
+1. AudioManager tipado explicitamente para ficar warning-clean na Godot 4.7.2.
+2. Smoke roda como cena do projeto, preservando autoloads.
+3. FlowProbe.tscn percorre programaticamente o caminho crítico completo antes de liberar a exportação Windows.
 
 ## Limitação humana
-A composição visual, conforto do áudio, legibilidade dos hotspots, navegação por controle e ritmo dos puzzles ainda precisam de playtest humano.
+A automação confirma funcionamento lógico/runtime, mas não mede conforto do áudio, legibilidade visual percebida, sensação do controle, ritmo ou qualidade subjetiva das deduções.
 
 ## Próxima ação canônica
-Executar um playtest humano completo da build 0.1.0 no Windows e registrar em 09 — PLAYTESTS E PROBLEMAS apenas problemas observáveis do caminho crítico, priorizando legibilidade, controle, áudio e sensação das duas deduções.
+Playtest humano da build 0.1.0 no Windows, registrando em 09 — PLAYTESTS E PROBLEMAS apenas problemas observáveis. Se não houver bloqueador, iniciar o próximo incremento documental do Caso 1 sobre a origem/encadeamento da expressão “Copa 2022”.
