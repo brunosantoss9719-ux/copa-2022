@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Godot
         run: |
           curl -L -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
@@ -20,6 +21,7 @@ jobs:
           chmod +x Godot_v4.7.2-stable_linux.x86_64
           sudo mv Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
           godot --version
+
       - name: Install export templates
         run: |
           curl -L -o templates.tpz "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz"
@@ -28,10 +30,12 @@ jobs:
           unzip -q templates.tpz -d /tmp/godot-templates
           mkdir -p "$HOME/.local/share/godot/export_templates/4.7.2.stable"
           cp -R /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/4.7.2.stable/"
+
       - name: Import and smoke
         run: |
           godot --headless --path . --import
-          godot --headless --path . --script tests/smoke.gd
+          godot --headless --path . --scene res://tests/Smoke.tscn
+
       - name: Export Windows x86_64
         id: export
         run: |
@@ -40,6 +44,7 @@ jobs:
           echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
           godot --headless --path . --export-release "Windows x86_64" "dist/Linha-de-Sombra-Copa-2022-$SHORT_SHA.exe"
           test -s "dist/Linha-de-Sombra-Copa-2022-$SHORT_SHA.exe"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
