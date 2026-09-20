@@ -29,6 +29,8 @@ var timeline_options: Array[OptionButton] = []
 var timeline_validate_button: Button
 var status_options: Dictionary = {}
 var status_validate_button: Button
+var origin_options: Array[OptionButton] = []
+var origin_validate_button: Button
 var conclusion_panel: PanelContainer
 var conclusion_text: Label
 var current_focus = null
@@ -74,9 +76,12 @@ func _add_action(action_name: String, keys: Array, buttons: Array, joy_axis := -
 func _spawn_evidence() -> void:
 	for child in hotspots_root.get_children():
 		child.queue_free()
+	var available_phase := 2 if GameState.status_solved else 1
 	var items := EvidenceDB.all_evidence()
 	items.sort_custom(func(a, b): return float(a.get("world_x", 0.0)) < float(b.get("world_x", 0.0)))
 	for item in items:
+		if int(item.get("phase", 1)) > available_phase:
+			continue
 		var hotspot = preload("res://scripts/evidence_hotspot.gd").new()
 		hotspot.setup(item)
 		hotspot.focus_changed.connect(_on_hotspot_focus)
@@ -114,8 +119,8 @@ func _build_ui() -> void:
 	ui_root.add_child(prompt_label)
 
 	toast_label = Label.new()
-	toast_label.position = Vector2(200, 590)
-	toast_label.size = Vector2(880, 46)
+	toast_label.position = Vector2(170, 590)
+	toast_label.size = Vector2(940, 46)
 	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	toast_label.add_theme_font_size_override("font_size", 18)
 	toast_label.visible = false
@@ -179,7 +184,7 @@ func _build_start_panel() -> void:
 	var title := _make_label("LINHA DE SOMBRA — COPA 2022", 30, false)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
-	var subtitle := _make_label("Sala de Evidências • fatia vertical 0.1", 18, false)
+	var subtitle := _make_label("Sala de Evidências • fatia vertical 0.2", 18, false)
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(subtitle)
 	box.add_child(_make_label("Thriller investigativo 2.5D. Explore a sala, registre as peças e só conclua o que o conjunto de fontes sustenta.", 16))
@@ -224,9 +229,12 @@ func _build_board_panel() -> void:
 	margin.add_theme_constant_override("margin_top", 18)
 	margin.add_theme_constant_override("margin_bottom", 18)
 	board_panel.add_child(margin)
+	var scroll := ScrollContainer.new()
+	margin.add_child(scroll)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 8)
-	margin.add_child(box)
+	box.custom_minimum_size = Vector2(1050, 0)
+	scroll.add_child(box)
 	box.add_child(_make_label("QUADRO DO CASO", 28, false))
 	board_progress = _make_label("", 15)
 	box.add_child(board_progress)
@@ -237,7 +245,7 @@ func _build_board_panel() -> void:
 	box.add_child(timeline_row)
 	for _i in range(3):
 		var option := OptionButton.new()
-		option.custom_minimum_size = Vector2(345, 42)
+		option.custom_minimum_size = Vector2(335, 42)
 		timeline_options.append(option)
 		timeline_row.add_child(option)
 	var action_row := HBoxContainer.new()
@@ -251,6 +259,7 @@ func _build_board_panel() -> void:
 	action_row.add_child(hint_timeline)
 	box.add_child(_make_label("Reconstrução — depois da cronologia correta, percorra as três estações translúcidas na sala.", 15))
 	box.add_child(HSeparator.new())
+
 	box.add_child(_make_label("Puzzle 2 — classifique a natureza da afirmação", 20, false))
 	var status_ids := ["ev_pf_2024", "ev_stf_judgment_2025", "ev_fiction_draft"]
 	for evidence_id in status_ids:
@@ -258,10 +267,10 @@ func _build_board_panel() -> void:
 		row.add_theme_constant_override("separation", 10)
 		var label := _make_label("", 14)
 		label.name = "Label_%s" % evidence_id
-		label.custom_minimum_size = Vector2(510, 36)
+		label.custom_minimum_size = Vector2(500, 36)
 		row.add_child(label)
 		var option := OptionButton.new()
-		option.custom_minimum_size = Vector2(360, 38)
+		option.custom_minimum_size = Vector2(350, 38)
 		status_options[evidence_id] = option
 		row.add_child(option)
 		box.add_child(row)
@@ -274,13 +283,33 @@ func _build_board_panel() -> void:
 	var hint_status := _make_button("Dica da classificação", func(): _request_hint("status"))
 	hint_status.custom_minimum_size = Vector2(220, 42)
 	status_action_row.add_child(hint_status)
+	box.add_child(HSeparator.new())
+
+	box.add_child(_make_label("Puzzle 3 — rastro documental de ‘Copa 2022’", 20, false))
+	box.add_child(_make_label("Preencha os três papéis documentais. Uma peça da acusação é relevante, mas não substitui o julgamento.", 14))
+	for prompt_text in CaseManager.ORIGIN_PROMPTS:
+		box.add_child(_make_label(str(prompt_text), 14))
+		var option := OptionButton.new()
+		option.custom_minimum_size = Vector2(820, 40)
+		origin_options.append(option)
+		box.add_child(option)
+	var origin_action_row := HBoxContainer.new()
+	origin_action_row.add_theme_constant_override("separation", 10)
+	box.add_child(origin_action_row)
+	origin_validate_button = _make_button("Validar rastro documental", _validate_origin)
+	origin_validate_button.custom_minimum_size = Vector2(250, 42)
+	origin_action_row.add_child(origin_validate_button)
+	var hint_origin := _make_button("Dica do rastro", func(): _request_hint("origin"))
+	hint_origin.custom_minimum_size = Vector2(220, 42)
+	origin_action_row.add_child(hint_origin)
+
 	board_feedback = _make_label("", 15)
-	board_feedback.custom_minimum_size = Vector2(0, 36)
+	board_feedback.custom_minimum_size = Vector2(0, 48)
 	box.add_child(board_feedback)
 	box.add_child(_make_button("Fechar quadro", _close_board))
 
 func _build_conclusion_panel() -> void:
-	conclusion_panel = _make_panel(Vector2(240, 125), Vector2(800, 490), Color(0.02, 0.055, 0.07, 0.99))
+	conclusion_panel = _make_panel(Vector2(220, 100), Vector2(840, 535), Color(0.02, 0.055, 0.07, 0.99))
 	conclusion_panel.visible = false
 	ui_root.add_child(conclusion_panel)
 	var margin := _make_margin()
@@ -288,9 +317,9 @@ func _build_conclusion_panel() -> void:
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 12)
 	margin.add_child(box)
-	box.add_child(_make_label("RELATÓRIO PROVISÓRIO", 28, false))
-	conclusion_text = _make_label("", 17)
-	conclusion_text.custom_minimum_size = Vector2(0, 280)
+	box.add_child(_make_label("RELATÓRIO PROVISÓRIO — RASTRO DOCUMENTAL", 26, false))
+	conclusion_text = _make_label("", 16)
+	conclusion_text.custom_minimum_size = Vector2(0, 340)
 	box.add_child(conclusion_text)
 	box.add_child(_make_button("Voltar à sala", _close_conclusion))
 
@@ -304,6 +333,7 @@ func _show_start_menu() -> void:
 func _new_game() -> void:
 	GameState.reset_state()
 	SaveManager.clear_save()
+	_spawn_evidence()
 	_spawn_reconstruction()
 	start_panel.visible = false
 	_pause_for_ui(false)
@@ -314,11 +344,15 @@ func _continue_game() -> void:
 	if not SaveManager.load_game():
 		_new_game()
 		return
+	_spawn_evidence()
 	_spawn_reconstruction()
 	start_panel.visible = false
 	_pause_for_ui(false)
 	_refresh_world_state()
-	_show_toast("Estado do caso restaurado.")
+	if GameState.status_solved and not GameState.origin_solved:
+		_show_toast("Estado restaurado. A ala documental à direita está liberada.")
+	else:
+		_show_toast("Estado do caso restaurado.")
 
 func _on_hotspot_focus(hotspot, focused: bool) -> void:
 	if focused:
@@ -370,28 +404,33 @@ func _close_board() -> void:
 	AudioManager.play_ui()
 	_pause_for_ui(false)
 
+func _populate_option(option: OptionButton) -> void:
+	option.clear()
+	option.add_item("— selecione —")
+	option.set_item_metadata(0, "")
+	for evidence_id in GameState.discovered_evidence:
+		var item := EvidenceDB.get_evidence(evidence_id)
+		if item.is_empty():
+			continue
+		option.add_item(str(item.get("title", evidence_id)))
+		option.set_item_metadata(option.item_count - 1, evidence_id)
+
 func _refresh_board() -> void:
 	if board_panel == null:
 		return
-	board_progress.text = "Evidências: %d/%d • Cronologia: %s • Reconstrução: %d/3 • Classificação: %s" % [
+	board_progress.text = "Evidências: %d/%d • Cronologia: %s • Reconstrução: %d/3 • Status: %s • Rastro: %s" % [
 		GameState.discovered_evidence.size(),
 		EvidenceDB.evidence_count(),
 		"resolvida" if GameState.timeline_solved else "aberta",
 		GameState.reconstruction_step,
-		"resolvida" if GameState.status_solved else "aberta"
+		"resolvido" if GameState.status_solved else "aberto",
+		"resolvido" if GameState.origin_solved else "aberto"
 	]
 	for option in timeline_options:
-		option.clear()
-		option.add_item("— selecione —")
-		option.set_item_metadata(0, "")
-		for evidence_id in GameState.discovered_evidence:
-			var item := EvidenceDB.get_evidence(evidence_id)
-			if item.is_empty():
-				continue
-			option.add_item(str(item.get("title", evidence_id)))
-			option.set_item_metadata(option.item_count - 1, evidence_id)
+		_populate_option(option)
 		option.disabled = GameState.timeline_solved
 	timeline_validate_button.disabled = not CaseManager.timeline_ready() or GameState.timeline_solved
+
 	for evidence_id in status_options.keys():
 		var option: OptionButton = status_options[evidence_id]
 		option.clear()
@@ -405,6 +444,11 @@ func _refresh_board() -> void:
 		if label != null:
 			label.text = str(EvidenceDB.get_evidence(evidence_id).get("title", evidence_id))
 	status_validate_button.disabled = not CaseManager.status_ready() or GameState.status_solved
+
+	for option in origin_options:
+		_populate_option(option)
+		option.disabled = GameState.origin_solved
+	origin_validate_button.disabled = not CaseManager.origin_ready() or GameState.origin_solved
 
 func _validate_timeline() -> void:
 	var answer: Array = []
@@ -461,6 +505,24 @@ func _validate_status() -> void:
 		board_feedback.text = "Uma origem foi elevada ou rebaixada indevidamente. Releia quem está afirmando cada coisa."
 		return
 	GameState.status_solved = true
+	GameState.slice_complete = false
+	SaveManager.save_game()
+	AudioManager.play_success()
+	board_panel.visible = false
+	_pause_for_ui(false)
+	_spawn_evidence()
+	_show_toast("Classificação sustentada. Uma segunda ala documental foi liberada à direita.")
+	_refresh_world_state()
+
+func _validate_origin() -> void:
+	var answer: Array = []
+	for option in origin_options:
+		answer.append(str(option.get_item_metadata(option.selected)))
+	if not CaseManager.validate_origin(answer):
+		AudioManager.play_fail()
+		board_feedback.text = "Esse rastro confunde investigação, abertura da ação penal, posição da acusação ou julgamento. Releia o papel de cada peça."
+		return
+	GameState.origin_solved = true
 	GameState.slice_complete = true
 	SaveManager.save_game()
 	AudioManager.play_success()
@@ -468,14 +530,14 @@ func _validate_status() -> void:
 	_show_conclusion()
 
 func _show_conclusion() -> void:
-	conclusion_text.text = "O que você sustentou não é uma narrativa total, e isso é o ponto.\n\n• A comunicação de 2024 registra conclusões atribuídas à investigação: alegação oficial.\n• O resultado da AP 2696 é decisão judicial e preserva resultados individuais distintos.\n• A decisão posterior sobre acordos também é individual e não reescreve automaticamente a situação dos demais.\n• O rascunho da analista e a própria sala são dramatização.\n\nPróximo caso: rastrear a origem e o encadeamento documental da expressão ‘Copa 2022’, mantendo a mesma disciplina de fonte."
+	conclusion_text.text = "O rastro que você sustentou é documental — não uma afirmação sobre o primeiro uso absoluto do nome.\n\n• Em novembro de 2024, uma decisão tornada pública pelo STF registrou, com atribuição à PF, que a operação era denominada pelos investigados de ‘Copa 2022’.\n• Em maio de 2025, o recebimento da denúncia abriu a ação penal; não era condenação.\n• Em novembro de 2025, a sustentação da PGR continuava sendo posição da acusação.\n• O resultado do julgamento é a peça que registra a decisão sobre responsabilidade individual.\n\nA regra do caso permanece: documento, acusação e decisão não são sinônimos."
 	conclusion_panel.visible = true
 	_pause_for_ui(true)
 
 func _close_conclusion() -> void:
 	conclusion_panel.visible = false
 	_pause_for_ui(false)
-	_show_toast("Marco 0.1 concluído e salvo.")
+	_show_toast("Marco 0.2 concluído e salvo.")
 
 func _request_hint(puzzle_id: String) -> void:
 	var level := GameState.use_hint(puzzle_id)
@@ -518,7 +580,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		_close_evidence()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("hint") and board_panel.visible:
-		if GameState.timeline_solved and GameState.reconstruction_complete:
+		if GameState.status_solved and not GameState.origin_solved:
+			_request_hint("origin")
+		elif GameState.timeline_solved and GameState.reconstruction_complete:
 			_request_hint("status")
 		else:
 			_request_hint("timeline")

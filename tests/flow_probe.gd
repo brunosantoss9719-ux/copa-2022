@@ -17,6 +17,12 @@ func _select_metadata(option: OptionButton, wanted: String) -> bool:
 			return true
 	return false
 
+func _collect(main: Node, evidence_ids: Array[String]) -> void:
+	for evidence_id in evidence_ids:
+		main.call("_on_evidence_activated", evidence_id)
+		_check(GameState.has_evidence(evidence_id), "Evidência não registrada: %s" % evidence_id)
+		main.call("_close_evidence")
+
 func _run() -> void:
 	SaveManager.clear_save()
 	GameState.reset_state()
@@ -35,66 +41,58 @@ func _run() -> void:
 	main.call("_new_game")
 	_check(not get_tree().paused, "Novo jogo não liberou a cena")
 
-	var evidence_ids: Array[String] = [
+	_collect(main, [
 		"ev_pf_2024",
 		"ev_copa_label",
 		"ev_stf_vote_2025",
 		"ev_stf_judgment_2025",
 		"ev_anpp_2026",
 		"ev_fiction_draft"
-	]
-	for evidence_id in evidence_ids:
-		main.call("_on_evidence_activated", evidence_id)
-		_check(GameState.has_evidence(evidence_id), "Evidência não registrada: %s" % evidence_id)
-		main.call("_close_evidence")
-
-	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências")
+	])
+	_check(GameState.discovered_evidence.size() == 6, "Primeira ala deveria ter seis evidências")
 	main.call("_refresh_board")
 
-	var timeline_options_value: Variant = main.get("timeline_options")
-	_check(timeline_options_value is Array, "timeline_options indisponível")
-	if timeline_options_value is Array:
-		var timeline_options: Array = timeline_options_value
-		var timeline_solution: Array[String] = [
-			"ev_pf_2024",
-			"ev_stf_judgment_2025",
-			"ev_anpp_2026"
-		]
-		for index in range(timeline_solution.size()):
-			var option: OptionButton = timeline_options[index] as OptionButton
-			_check(option != null, "OptionButton da cronologia ausente")
-			if option != null:
-				_check(_select_metadata(option, timeline_solution[index]), "Opção da cronologia não encontrada: %s" % timeline_solution[index])
-		main.call("_validate_timeline")
-
+	var timeline_options: Array = main.get("timeline_options")
+	var timeline_solution: Array[String] = ["ev_pf_2024", "ev_stf_judgment_2025", "ev_anpp_2026"]
+	for index in range(timeline_solution.size()):
+		var option: OptionButton = timeline_options[index] as OptionButton
+		_check(option != null and _select_metadata(option, timeline_solution[index]), "Falha ao montar cronologia")
+	main.call("_validate_timeline")
 	_check(GameState.timeline_solved, "Cronologia correta não avançou o fluxo")
 
 	for step_index in range(3):
 		main.call("_on_reconstruction_activated", step_index)
-
 	_check(GameState.reconstruction_complete, "Reconstrução completa não foi marcada")
 	main.call("_refresh_board")
 
-	var status_options_value: Variant = main.get("status_options")
-	_check(status_options_value is Dictionary, "status_options indisponível")
-	if status_options_value is Dictionary:
-		var status_options: Dictionary = status_options_value
-		var expected: Dictionary = {
-			"ev_pf_2024": "ALEGAÇÃO_OFICIAL",
-			"ev_stf_judgment_2025": "DECISÃO_JUDICIAL",
-			"ev_fiction_draft": "FICÇÃO_DRAMÁTICA"
-		}
-		for evidence_id in expected.keys():
-			var option: OptionButton = status_options.get(evidence_id) as OptionButton
-			_check(option != null, "OptionButton de status ausente: %s" % evidence_id)
-			if option != null:
-				_check(_select_metadata(option, str(expected[evidence_id])), "Status não encontrado para %s" % evidence_id)
-		main.call("_validate_status")
+	var status_options: Dictionary = main.get("status_options")
+	var expected_status: Dictionary = {
+		"ev_pf_2024": "ALEGAÇÃO_OFICIAL",
+		"ev_stf_judgment_2025": "DECISÃO_JUDICIAL",
+		"ev_fiction_draft": "FICÇÃO_DRAMÁTICA"
+	}
+	for evidence_id in expected_status.keys():
+		var option: OptionButton = status_options.get(evidence_id) as OptionButton
+		_check(option != null and _select_metadata(option, str(expected_status[evidence_id])), "Falha ao classificar %s" % evidence_id)
+	main.call("_validate_status")
+	_check(GameState.status_solved, "Classificação correta não liberou a segunda ala")
+	_check(not GameState.slice_complete, "Slice terminou antes do rastro documental")
 
-	_check(GameState.status_solved, "Classificação correta não avançou")
-	_check(GameState.slice_complete, "Slice não terminou após o caminho correto")
+	_collect(main, ["ev_pet13236_2024", "ev_denuncia_received_2025", "ev_pgr_argument_2025"])
+	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências 0.2")
+	main.call("_refresh_board")
+
+	var origin_options: Array = main.get("origin_options")
+	var origin_solution: Array[String] = ["ev_pet13236_2024", "ev_denuncia_received_2025", "ev_stf_judgment_2025"]
+	for index in range(origin_solution.size()):
+		var option: OptionButton = origin_options[index] as OptionButton
+		_check(option != null and _select_metadata(option, origin_solution[index]), "Falha ao montar rastro documental")
+	main.call("_validate_origin")
+
+	_check(GameState.origin_solved, "Rastro documental correto não avançou")
+	_check(GameState.slice_complete, "Slice 0.2 não terminou após o caminho correto")
 	var conclusion_panel: PanelContainer = main.get("conclusion_panel") as PanelContainer
-	_check(conclusion_panel != null and conclusion_panel.visible, "Relatório provisório final não foi exibido")
+	_check(conclusion_panel != null and conclusion_panel.visible, "Relatório final 0.2 não foi exibido")
 	_check(SaveManager.has_save(), "Fluxo completo não deixou save")
 
 	SaveManager.clear_save()
@@ -104,7 +102,7 @@ func _run() -> void:
 
 func _finish() -> void:
 	if failures.is_empty():
-		print("FLOW_OK: caminho crítico completo validado da abertura ao relatório final.")
+		print("FLOW_OK: caminho 0.2 validado até o rastro documental e relatório final.")
 		get_tree().quit(0)
 		return
 	for failure in failures:

@@ -1,16 +1,28 @@
 # STORY
 
-## Slice 0.1 — Sala de Evidências
+## 0.1 — Sala de Evidências
 
-A investigadora composta entra em uma sala de arquivo após o expediente. Há comunicação de investigação, material institucional de julgamento, decisões posteriores e um rascunho ficcional da própria equipe.
+A investigadora composta entra em uma sala de arquivo após o expediente. O primeiro bloco ensina a separar comunicação de investigação, julgamento, decisão posterior e dramatização.
 
-A primeira dedução é documental. O jogador ordena:
-1. o que foi comunicado como conclusão de investigação;
-2. o que foi posteriormente julgado;
-3. o que mudou em situação individual depois do julgamento.
+O jogador resolve:
+1. cronologia documental;
+2. reconstrução investigativa abstrata;
+3. classificação factual.
 
-Ao acertar, a sala muda para RECONSTRUÇÃO INVESTIGATIVA. Três estações translúcidas condensam o encadeamento sem reproduzir procedimento operacional.
+## 0.2 — O rastro do nome
 
-No segundo puzzle, o jogador classifica três peças por status: alegação oficial, decisão judicial e ficção dramática.
+Depois da classificação, uma segunda ala da sala é liberada. O problema muda: não é “o que aconteceu operacionalmente?”, mas **de onde vem cada etapa documental do nome “Copa 2022” dentro do dossiê disponível**.
 
-O relatório provisório termina separando alegação, decisão e dramatização. O próximo caso canônico é rastrear a origem e o encadeamento documental da expressão “Copa 2022”.
+Três novas peças entram no caso:
+- novembro de 2024: decisão pública do STF que registra, com atribuição à PF, que a operação era denominada pelos investigados de “Copa 2022”;
+- maio de 2025: recebimento da denúncia do Núcleo 3, marco que abre a ação penal sem equivaler a condenação;
+- novembro de 2025: sustentação oral da PGR, explicitamente tratada como posição da acusação.
+
+O puzzle final pede ao jogador que identifique:
+1. a peça que liga o nome à investigação;
+2. a peça que marca a abertura da ação penal;
+3. a peça que registra o resultado do julgamento.
+
+A sustentação da PGR funciona como distração legítima: é relevante para a história, mas não substitui a decisão do tribunal.
+
+A conclusão reforça que o jogo reconstrói **um rastro documental deste conjunto de fontes**, e não afirma ter localizado o primeiro uso absoluto da expressão.

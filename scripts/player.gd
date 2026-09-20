@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const SPEED := 245.0
+const WORLD_RIGHT := 2860.0
 
 var controls_enabled := true
 var _step_clock := 0.0
@@ -26,7 +27,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		_step_clock = 0.0
 	velocity.x = direction * SPEED
-	position.x = clampf(position.x + velocity.x * delta, 90.0, 2110.0)
+	position.x = clampf(position.x + velocity.x * delta, 90.0, WORLD_RIGHT)
 	position.y = 552.0
 	queue_redraw()
 

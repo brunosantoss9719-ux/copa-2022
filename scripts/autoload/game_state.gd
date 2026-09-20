@@ -7,8 +7,9 @@ var timeline_solved := false
 var reconstruction_step := 0
 var reconstruction_complete := false
 var status_solved := false
+var origin_solved := false
 var slice_complete := false
-var hints_used := {"timeline": 0, "status": 0}
+var hints_used := {"timeline": 0, "status": 0, "origin": 0}
 
 func reset_state() -> void:
 	discovered_evidence.clear()
@@ -16,8 +17,9 @@ func reset_state() -> void:
 	reconstruction_step = 0
 	reconstruction_complete = false
 	status_solved = false
+	origin_solved = false
 	slice_complete = false
-	hints_used = {"timeline": 0, "status": 0}
+	hints_used = {"timeline": 0, "status": 0, "origin": 0}
 
 func discover_evidence(evidence_id: String) -> bool:
 	if evidence_id in discovered_evidence:
@@ -42,6 +44,7 @@ func to_save_dict() -> Dictionary:
 		"reconstruction_step": reconstruction_step,
 		"reconstruction_complete": reconstruction_complete,
 		"status_solved": status_solved,
+		"origin_solved": origin_solved,
 		"slice_complete": slice_complete,
 		"hints_used": hints_used.duplicate(true)
 	}
@@ -56,9 +59,11 @@ func from_save_dict(data: Dictionary) -> bool:
 	reconstruction_step = clampi(int(data.get("reconstruction_step", 0)), 0, 3)
 	reconstruction_complete = bool(data.get("reconstruction_complete", reconstruction_step >= 3))
 	status_solved = bool(data.get("status_solved", false))
-	slice_complete = bool(data.get("slice_complete", false))
+	origin_solved = bool(data.get("origin_solved", false))
+	slice_complete = bool(data.get("slice_complete", false)) and origin_solved
 	var loaded_hints = data.get("hints_used", {})
 	if loaded_hints is Dictionary:
 		hints_used["timeline"] = clampi(int(loaded_hints.get("timeline", 0)), 0, 3)
 		hints_used["status"] = clampi(int(loaded_hints.get("status", 0)), 0, 3)
+		hints_used["origin"] = clampi(int(loaded_hints.get("origin", 0)), 0, 3)
 	return true

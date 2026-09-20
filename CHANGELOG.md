@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.2.0 — rastro documental de “Copa 2022”
+- Segunda ala da Sala de Evidências liberada após a classificação factual.
+- Três novas evidências oficiais auditáveis (LS-F006 a LS-F008).
+- Novo puzzle de proveniência documental com validação do conjunto inteiro.
+- Distinção explícita entre investigação, recebimento da denúncia, posição da acusação e julgamento.
+- Mundo lateral ampliado sem trocar a arquitetura 2D/2.5D.
+- Save compatível com saves 0.1; conclusão antiga deixa de ser considerada final até o novo puzzle ser resolvido.
+- Smoke e FlowProbe ampliados para o caminho 0.2.
+- Artifact/CI serão registrados após validação.
+
 ## 0.1.0 — primeira execução
 - Fundação Godot 4.7.2-stable.
 - Sala de Evidências jogável em 2.5D.
@@ -9,9 +19,4 @@
 - Reconstrução documental curta.
 - Save/load versionado.
 - Áudio procedural.
-- Corrigida inferência de `Variant` no gerador de áudio sob warnings estritos.
-- Smoke movido para `tests/Smoke.tscn`, executado no contexto real do projeto/autoloads.
-- Adicionado `tests/FlowProbe.tscn`, que percorre o caminho crítico completo.
-- Validate run 35518660928 verde com `SMOKE_OK` e `FLOW_OK`.
-- Build Windows run 35518660807 verde.
-- Artifact final deste passo: `linha-de-sombra-0.1.0-73796c7`.
+- Smoke e FlowProbe integrados ao CI.
