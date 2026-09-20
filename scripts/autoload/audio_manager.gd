@@ -50,27 +50,27 @@ func _play_tone(kind: String, extra_db := 0.0) -> void:
 	sfx_player.play()
 
 func _make_ambience() -> AudioStreamWAV:
-	var sample_count := int(4.0 * MIX_RATE)
+	var sample_count: int = int(4.0 * MIX_RATE)
 	var samples := PackedFloat32Array()
 	samples.resize(sample_count)
 	for i in range(sample_count):
-		var t := float(i) / float(MIX_RATE)
-		var hum := sin(TAU * 54.0 * t) * 0.045 + sin(TAU * 108.0 * t) * 0.018
-		var texture := sin(float(i) * 0.173) * sin(float(i) * 0.071) * 0.012
+		var t: float = float(i) / float(MIX_RATE)
+		var hum: float = sin(TAU * 54.0 * t) * 0.045 + sin(TAU * 108.0 * t) * 0.018
+		var texture: float = sin(float(i) * 0.173) * sin(float(i) * 0.071) * 0.012
 		samples[i] = hum + texture
-	var wav := _samples_to_wav(samples)
+	var wav: AudioStreamWAV = _samples_to_wav(samples)
 	wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	wav.loop_begin = 0
 	wav.loop_end = sample_count
 	return wav
 
 func _make_tone(seconds: float, frequency: float, amplitude: float) -> AudioStreamWAV:
-	var sample_count := max(1, int(seconds * MIX_RATE))
+	var sample_count: int = maxi(1, int(seconds * MIX_RATE))
 	var samples := PackedFloat32Array()
 	samples.resize(sample_count)
 	for i in range(sample_count):
-		var t := float(i) / float(MIX_RATE)
-		var envelope := 1.0 - (float(i) / float(sample_count))
+		var t: float = float(i) / float(MIX_RATE)
+		var envelope: float = 1.0 - (float(i) / float(sample_count))
 		samples[i] = (sin(TAU * frequency * t) + sin(TAU * frequency * 0.5 * t) * 0.35) * amplitude * envelope
 	return _samples_to_wav(samples)
 
@@ -78,7 +78,7 @@ func _samples_to_wav(samples: PackedFloat32Array) -> AudioStreamWAV:
 	var bytes := PackedByteArray()
 	bytes.resize(samples.size() * 2)
 	for i in range(samples.size()):
-		var value := int(clampf(samples[i], -1.0, 1.0) * 32767.0)
+		var value: int = int(clampf(samples[i], -1.0, 1.0) * 32767.0)
 		if value < 0:
 			value += 65536
 		bytes[i * 2] = value & 0xff
