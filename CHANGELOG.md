@@ -9,7 +9,10 @@
 - Save anterior permanece carregável; conclusão 0.3 não pula o Puzzle 5.
 - Mundo/câmera ampliados para a quarta ala.
 - Smoke e FlowProbe ampliados para 16 evidências e cinco puzzles.
-- CI/artifact serão registrados após validação.
+- Validate run 35579286186: SUCCESS.
+- Build Windows run 35579286166: SUCCESS.
+- Artifact: `linha-de-sombra-0.4.0-2ec4ed1`.
+- Commit de software/build validado: `2ec4ed10e8926e12074e63cf2531173c7ac81f1e`.
 
 
 ## 0.3.0 — individualização
