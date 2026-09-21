@@ -75,6 +75,13 @@ func _run() -> void:
 		_check(board_panel != null and board_panel.visible, "Botão Hipótese touch não abriu o quadro")
 		_check(str(main.get("board_stage")) == "timeline", "Quadro mobile não abriu na pergunta ativa")
 		_check(tray != null and tray.get_child_count() >= 2, "Bandeja mobile não exibiu evidência descoberta")
+		var cards: Dictionary = main.get("board_card_buttons")
+		if cards.has(str(hotspots.get_child(0).get("evidence_id"))):
+			var first_card: Button = cards[str(hotspots.get_child(0).get("evidence_id"))] as Button
+			first_card.pressed.emit()
+			await get_tree().process_frame
+			var preview_body: Label = main.get("board_preview_body") as Label
+			_check(preview_body != null and preview_body.text.length() > 20, "Toque no cartão não abriu prévia da evidência")
 		main.call("_close_board")
 
 	_check(controls == null or controls.visible, "Controles mobile não retornaram após fechar modal")
@@ -88,7 +95,7 @@ func _run() -> void:
 
 func _finish() -> void:
 	if failures.is_empty():
-		print("MOBILE_TOUCH_OK: movimento, interação e quadro touch validados.")
+		print("MOBILE_TOUCH_OK: movimento, interação, hipótese e prévia touch validados.")
 		get_tree().quit(0)
 		return
 	for failure in failures:
