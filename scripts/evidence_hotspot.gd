@@ -57,18 +57,27 @@ func _process(_delta: float) -> void:
 	if _inside or not GameState.has_evidence(evidence_id):
 		queue_redraw()
 
+func is_classification_revealed() -> bool:
+	return phase_index > 1 or GameState.status_solved
+
 func _draw() -> void:
 	var found := GameState.has_evidence(evidence_id)
-	var edge := _status_color()
+	var revealed := is_classification_revealed()
+	var edge := _status_color() if revealed else Color("#91a8ab")
 	if found:
 		edge = Color(edge.r * 0.62, edge.g * 0.62, edge.b * 0.62, 0.82)
 
-	# Sombra e pequena luz de leitura amarram o item ao cenário.
+	# Sombra e luz de leitura amarram o item ao cenário.
 	draw_circle(Vector2(0, 49), 30.0, Color(0.0, 0.0, 0.0, 0.32))
 	if not found:
-		draw_circle(Vector2(0, -4), 48.0, Color(edge.r, edge.g, edge.b, 0.035))
+		var glow_alpha := 0.045 if _inside else 0.025
+		draw_circle(Vector2(0, -4), 50.0, Color(edge.r, edge.g, edge.b, glow_alpha))
 
-	if factual_status == "ALEGAÇÃO_OFICIAL":
+	# Antes do puzzle de autoridade, as peças da triagem compartilham a
+	# mesma linguagem visual. Cor e silhueta não podem denunciar a resposta.
+	if not revealed:
+		_draw_unclassified_packet(edge, found)
+	elif factual_status == "ALEGAÇÃO_OFICIAL":
 		_draw_folder(edge, found)
 	elif factual_status == "TESE_DE_DEFESA":
 		_draw_defense_memo(edge, found)
@@ -77,14 +86,29 @@ func _draw() -> void:
 	else:
 		_draw_judicial_sheet(edge, found)
 
-	# Identificador visual mínimo de fase, sem revelar solução.
+	# Marcador de setor, não de status.
 	for i in range(phase_index):
-		draw_circle(Vector2(-14.0 + i * 9.0, 38.0), 2.2, Color(edge.r, edge.g, edge.b, 0.72))
+		draw_circle(Vector2(-14.0 + i * 9.0, 38.0), 2.2, Color(edge.r, edge.g, edge.b, 0.66))
 
 	if _inside:
 		var pulse := 38.0 + sin(Time.get_ticks_msec() / 170.0) * 3.0
 		draw_arc(Vector2(0, -3), pulse, 0.0, TAU, 40, Color(0.70, 0.96, 0.94, 0.78), 2.0)
 		draw_line(Vector2(-25, 55), Vector2(25, 55), Color(0.68, 0.95, 0.92, 0.55), 2.0)
+
+func _draw_unclassified_packet(edge: Color, found: bool) -> void:
+	var fill := Color("#1b272d") if found else Color("#24343a")
+	draw_colored_polygon(PackedVector2Array([
+		Vector2(-29, -38), Vector2(21, -38), Vector2(29, -30),
+		Vector2(29, 34), Vector2(-29, 34)
+	]), fill)
+	draw_polyline(PackedVector2Array([
+		Vector2(-29, -38), Vector2(21, -38), Vector2(29, -30),
+		Vector2(29, 34), Vector2(-29, 34), Vector2(-29, -38)
+	]), edge, 2.0)
+	draw_line(Vector2(-16, -19), Vector2(16, -19), Color(edge.r, edge.g, edge.b, 0.54), 2.0)
+	draw_line(Vector2(-16, -5), Vector2(11, -5), Color(edge.r, edge.g, edge.b, 0.40), 2.0)
+	draw_line(Vector2(-16, 9), Vector2(14, 9), Color(edge.r, edge.g, edge.b, 0.30), 2.0)
+	draw_rect(Rect2(10, 19, 10, 7), Color(edge.r, edge.g, edge.b, 0.18), true)
 
 func _draw_folder(edge: Color, found: bool) -> void:
 	var fill := Color(0.18, 0.24, 0.25, 0.96) if found else Color(0.24, 0.31, 0.30, 0.98)

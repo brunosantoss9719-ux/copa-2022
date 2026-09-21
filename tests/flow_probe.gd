@@ -43,6 +43,12 @@ func _run() -> void:
 	main.call("_new_game")
 	_check(not get_tree().paused, "Novo jogo não liberou a cena")
 	_check(str(main.get("board_stage")) == "timeline", "Pergunta ativa inicial deveria ser a sequência")
+	var initial_hotspots: Node = main.get_node("Hotspots")
+	if initial_hotspots.get_child_count() > 0:
+		var first_hotspot = initial_hotspots.get_child(0)
+		_check(not bool(first_hotspot.call("is_classification_revealed")), "Triagem visual entregou o status antes do puzzle")
+	_check(not str(main.call("_board_card_label", "ev_pf_2024", "timeline")).contains("investigação"), "Rótulo da bandeja entregou a função da peça")
+	_check(not str(main.call("_board_card_label", "ev_stf_judgment_2025", "timeline")).contains("julgamento"), "Rótulo da bandeja entregou o resultado")
 
 	var investigator: CharacterBody2D = main.get_node("Investigator") as CharacterBody2D
 	var phase_gate: Node = main.get_node("PhaseGate")
@@ -67,6 +73,10 @@ func _run() -> void:
 
 	main.call("_open_board")
 	_check(str(main.get("board_stage")) == "timeline", "Primeira hipótese não é a sequência")
+	main.call("_select_board_evidence", "ev_pf_2024")
+	var preview_body: Label = main.get("board_preview_body") as Label
+	_check(preview_body != null and preview_body.text.length() > 40, "Prévia da evidência não expôs conteúdo suficiente para inferência")
+	main.call("_select_board_evidence", "ev_pf_2024")
 	_place_sequence(main, ["ev_pf_2024", "ev_stf_judgment_2025", "ev_anpp_2026"])
 	main.call("_validate_active_board")
 	_check(GameState.timeline_solved, "Sequência correta não avançou o fluxo")
@@ -86,6 +96,10 @@ func _run() -> void:
 	_check(GameState.status_solved, "Classificação correta não liberou o Setor B")
 	_check(not GameState.slice_complete, "Slice terminou antes do rastro documental")
 	_check(bool(phase_gate.call("is_unlocked")), "Portal do Setor B não foi liberado")
+	var revealed_hotspots: Node = main.get_node("Hotspots")
+	if revealed_hotspots.get_child_count() > 0:
+		var first_revealed = revealed_hotspots.get_child(0)
+		_check(bool(first_revealed.call("is_classification_revealed")), "Feedback visual não revelou classificação após puzzle resolvido")
 	var phase_banner: PanelContainer = main.get("phase_banner") as PanelContainer
 	_check(phase_banner != null and phase_banner.visible, "Transição do Setor B não foi exibida")
 
@@ -149,7 +163,7 @@ func _run() -> void:
 
 func _finish() -> void:
 	if failures.is_empty():
-		print("FLOW_OK: investigação 0.5 validada por cartões, carimbos, reconstrução e contraditório.")
+		print("FLOW_OK: investigação 0.5.1 validada com códigos neutros, prévia, carimbos, reconstrução e contraditório.")
 		get_tree().quit(0)
 		return
 	for failure in failures:
