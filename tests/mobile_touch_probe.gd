@@ -73,8 +73,8 @@ func _run() -> void:
 		await get_tree().process_frame
 		var board_panel: PanelContainer = main.get("board_panel") as PanelContainer
 		_check(board_panel != null and board_panel.visible, "Botão Hipótese touch não abriu o quadro")
-	\t_check(str(main.get("board_stage")) == "timeline", "Quadro mobile não abriu na pergunta ativa")
-	\t_check(tray != null and tray.get_child_count() >= 2, "Bandeja mobile não exibiu evidência descoberta")
+		_check(str(main.get("board_stage")) == "timeline", "Quadro mobile não abriu na pergunta ativa")
+		_check(tray != null and tray.get_child_count() >= 2, "Bandeja mobile não exibiu evidência descoberta")
 		main.call("_close_board")
 
 	_check(controls == null or controls.visible, "Controles mobile não retornaram após fechar modal")
