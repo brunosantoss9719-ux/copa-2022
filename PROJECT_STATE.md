@@ -1,61 +1,55 @@
 # PROJECT_STATE
 
 ## Snapshot
-Versão: 0.5.0
+Versão: 0.5.0 — quality pass
 Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
 Targets validados: Windows x86_64 e Android arm64
-Último commit de software/build validado: 242258c0df8c13393218368880cae000973b4c84
+Último commit de software/build validado: 32b40c94ff67e32fe60cb8bc4c0fe4ac3bfedbd5
 
 ## Estado implementado
 - quatro setores investigativos, 16 evidências e cinco problemas de dedução;
 - exploração lateral 2.5D, reconstrução espacial, dicas, save/load e áudio procedural;
+- quadro de hipótese com cartões, slots, carimbos e prévia de conteúdo;
 - teclado/controle + touch Android;
 - Windows x86_64 e APK Android arm64;
 - Smoke, FlowProbe e MobileTouchProbe;
 - CI Windows + Android e APK publicado em GitHub Release.
 
-## Reforma 0.5.0 — jogabilidade
-A 0.5.0 substitui o antigo quadro com vários OptionButtons empilhados por uma investigação focada em uma pergunta ativa por vez.
+## Quality pass 0.5.0 — inferência
+A revisão 32b40c9 aprofunda o loop sem adicionar conteúdo factual.
 
-Fluxo atual:
-- explorar o espaço e localizar peças;
-- examinar a peça sem receber a solução do puzzle;
-- abrir a hipótese ativa;
-- selecionar cartões na bandeja e encaixá-los em slots de raciocínio;
-- classificar autoridade documental com carimbos;
-- voltar à sala para confrontar a cronologia em três projeções espaciais;
-- liberar novos setores e repetir o ciclo com nova pergunta;
-- concluir o contraditório separando tese de defesa de resultado judicial.
+Mudanças:
+- rótulos da bandeja agora são códigos neutros de arquivo, sem repetir a função/resultado da peça;
+- selecionar um código abre uma prévia com título, fonte e resumo da evidência já examinada;
+- a decisão passa a depender da leitura do conteúdo, não de correspondência verbal do botão;
+- a cronologia usa três slots horizontais;
+- o contraditório é apresentado em dois dossiês paralelos, Bernardo e Márcio;
+- progresso do quadro mostra peças relevantes ao problema ativo;
+- o FlowProbe bloqueia regressões em que rótulo ou aparência entreguem a solução.
 
-O painel de evidência não revela mais o factual_status das peças da triagem antes da etapa de classificação.
+## Quality pass 0.5.0 — anti-spoiler visual
+Antes da classificação de autoridade, as peças da triagem compartilham silhueta e cor neutras.
+Forma e cor específicas de alegação, decisão e ficção só aparecem depois de GameState.status_solved.
+Isso corrige a pista visual involuntária da revisão anterior.
 
-## Reforma 0.5.0 — visual
-O cenário procedural foi recomposto em setores com identidade própria:
-- Setor A: triagem, mesa longa, monitor e arquivo;
-- Setor B: arquivo processual com estantes;
-- Setor C: mesa de comparação e painéis;
-- Setor D: dois painéis contrapostos para tese e resultado.
-
-Também foram redesenhados:
-- silhueta da investigadora;
-- evidências, com formas distintas por natureza documental;
-- projeções da reconstrução;
-- portais de acesso entre setores;
-- janelas, chuva, profundidade arquitetônica, piso e primeiro plano.
-
-A arte continua procedural/provisória. CI não mede qualidade estética; a próxima rodada deve ser guiada por leitura visual e sensação real de jogo, não por expansão de conteúdo.
+## Quality pass 0.5.0 — apresentação
+- câmera ganhou look-ahead conforme direção de movimento;
+- setores ganharam hierarquia de luz e áreas bloqueadas recuam para a sombra;
+- investigadora usa silhueta mais gráfica/poligonal;
+- interações ganharam sons procedurais distintos de papel, alfinete, carimbo e projetor;
+- nenhum asset externo ou dependência nova foi adicionado.
 
 ## Fatos usados
 Claims ativos permanecem LS-F001 a LS-F013.
-Nenhum claim político/processual, resultado judicial ou tese de defesa foi alterado na 0.5.0.
+Nenhum claim político/processual, resultado judicial ou tese de defesa foi alterado nesta revisão.
 
 ## Validação automática
-Commit: 242258c0df8c13393218368880cae000973b4c84.
-Validate run 35585327343: SUCCESS.
-Build Windows run 35585327331: SUCCESS.
-Build Android run 35585327567: SUCCESS.
+Commit: 32b40c94ff67e32fe60cb8bc4c0fe4ac3bfedbd5.
+Validate run 35588942756: SUCCESS.
+Build Windows run 35588942672: SUCCESS.
+Build Android run 35588942668: SUCCESS.
 Smoke: SUCCESS.
 FlowProbe: SUCCESS.
 MobileTouchProbe: SUCCESS.
@@ -64,26 +58,34 @@ Export Android: SUCCESS.
 apksigner: SUCCESS.
 GitHub Release: SUCCESS.
 
-## Builds
-Windows artifact: `linha-de-sombra-0.5.0-242258c`.
-Windows artifact ID: 10632310441.
-Windows artifact ZIP SHA-256: 91d0160a340500f43002223861e2f50e1f63ba1cef3bce15ba34a59d2d72806b.
+FlowProbe também confirma:
+- classificação visual não é revelada antes do puzzle;
+- rótulos neutros não contêm termos que entreguem as respostas testadas;
+- prévia da evidência fornece conteúdo suficiente para inferência;
+- classificação visual aparece após a resolução.
 
-Android Actions artifact: `linha-de-sombra-android-0.5.0-242258c`.
-Android artifact ID: 10632006968.
-Android artifact ZIP SHA-256: 45a11dec269638394c63bc97853827ee0acf89180188c6d996f87269bfbfe323.
+MobileTouchProbe confirma também a abertura da prévia pelo cartão no quadro touch.
+
+## Builds
+Windows artifact: `linha-de-sombra-0.5.0-32b40c9`.
+Windows artifact ID: 10633447809.
+Windows artifact ZIP SHA-256: dc4bccd651c9003d858083600b460fd05ef29a4bd5c9022ca8bfbf19025e5ea2.
+
+Android Actions artifact: `linha-de-sombra-android-0.5.0-32b40c9`.
+Android artifact ID: 10633333053.
+Android artifact ZIP SHA-256: 0df804ffc45c4cb5d691cb50c60be4f6d1e0508c7e202f069e09959f5405908b.
 
 Android Release:
-- tag: `android-0.5.0-242258c`
-- release ID: 392844173
-- asset: `Linha-de-Sombra-Copa-2022-Android-242258c.apk`
-- asset ID: 578740529
-- APK: 28.352.403 bytes
-- APK SHA-256: 233c637347141aa297b3ba4c51d6317503c3f0f4a64cea73331aafc438a61a50
-- download direto: https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.5.0-242258c/Linha-de-Sombra-Copa-2022-Android-242258c.apk
+- tag: `android-0.5.0-32b40c9`
+- release ID: 392867847
+- asset: `Linha-de-Sombra-Copa-2022-Android-32b40c9.apk`
+- asset ID: 578805453
+- APK: 28.364.691 bytes
+- APK SHA-256: 151557d803dc42b56346aac4e6dcbc01e22f93f9dbbad57e3d1c4054c4337cb1
+- download direto: https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.5.0-32b40c9/Linha-de-Sombra-Copa-2022-Android-32b40c9.apk
 
-## Feedback humano que motivou 0.5.0
-A 0.4.1 foi considerada visualmente fraca e com jogabilidade sem sentido, especialmente porque o quadro se comportava como um formulário longo. A 0.5.0 é a resposta direta a esse problema e não uma expansão de conteúdo.
+## Limite da validação
+Automação comprova parsing, fluxo crítico, ausência das regressões cobertas, touch e exportação. Não comprova por si só beleza, ritmo ou satisfação do puzzle.
 
 ## Próxima ação canônica
-Fazer um passe de qualidade sobre a 0.5.0 focado em composição, legibilidade, sensação de descoberta e qualidade dos puzzles. Corrigir o que ainda parecer genérico, feio, óbvio ou burocrático antes de criar novo arquivo/caso.
+Avaliar a revisão 32b40c9 como produto, com foco em composição, legibilidade, ritmo e se os códigos neutros + prévia realmente exigem leitura/inferência. Corrigir somente problemas concretos observados antes de expandir conteúdo; Arquivo V continua bloqueado.
