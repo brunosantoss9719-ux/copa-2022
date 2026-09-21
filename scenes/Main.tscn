@@ -41,16 +41,16 @@ offset_left = -112.0
 offset_top = 346.0
 offset_right = 112.0
 offset_bottom = 380.0
-text = "ARQUIVO II"
+text = "SETOR B · RASTRO"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 
 [node name="State" type="Label" parent="PhaseGate"]
 offset_left = -132.0
 offset_top = 382.0
 offset_right = 132.0
 offset_bottom = 414.0
-text = "ACESSO PENDENTE"
+text = "ISOLADO"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 16
 
@@ -64,7 +64,7 @@ offset_left = -132.0
 offset_top = 346.0
 offset_right = 132.0
 offset_bottom = 380.0
-text = "ARQUIVO III"
+text = "SETOR C · INDIVIDUALIZAÇÃO"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 22
 
@@ -73,7 +73,7 @@ offset_left = -132.0
 offset_top = 382.0
 offset_right = 132.0
 offset_bottom = 414.0
-text = "ACESSO PENDENTE"
+text = "ISOLADO"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 16
 
@@ -87,7 +87,7 @@ offset_left = -132.0
 offset_top = 346.0
 offset_right = 132.0
 offset_bottom = 380.0
-text = "ARQUIVO IV"
+text = "SETOR D · CONTRADITÓRIO"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 22
 
@@ -96,7 +96,7 @@ offset_left = -132.0
 offset_top = 382.0
 offset_right = 132.0
 offset_bottom = 414.0
-text = "ACESSO PENDENTE"
+text = "ISOLADO"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 16
 
@@ -117,7 +117,7 @@ shape = SubResource("RectangleShape2D_player")
 [node name="Camera2D" type="Camera2D" parent="Investigator"]
 position = Vector2(0, -192)
 position_smoothing_enabled = true
-position_smoothing_speed = 5.0
+position_smoothing_speed = 6.5
 limit_left = 0
 limit_top = 0
 limit_right = 4900
