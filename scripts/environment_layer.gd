@@ -79,7 +79,7 @@ func _draw_mid() -> void:
 		draw_rect(Rect2(x + 10, 258, 128, 226), Color("#0e1920"), true)
 		for y in range(284, 468, 38):
 			draw_line(Vector2(x + 18, y), Vector2(x + 130, y), Color("#314750"), 2.0)
-			draw_rect(Rect2(x + 28 + ((y / 38) as int % 3) * 17, y - 21, 52, 15), Color(0.42, 0.48, 0.44, 0.20), true)
+			draw_rect(Rect2(x + 28 + (int(y / 38) % 3) * 17, y - 21, 52, 15), Color(0.42, 0.48, 0.44, 0.20), true)
 
 	# Setor C: mesa de comparação, luminária baixa e quadro de diferenças.
 	draw_rect(Rect2(3020, 286, 680, 172), Color("#101c22"), true)
