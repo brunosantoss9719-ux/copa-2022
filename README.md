@@ -31,3 +31,8 @@ A versão 0.4.1 inclui preset Android APK e controles touch em paisagem: esquerd
 O CI gera um APK debug assinado para playtest fora da Play Store.
 
 A 0.4.1 também adiciona MobileTouchProbe automatizado, assinatura debug persistente por cache do CI e publicação do APK em GitHub Release para download direto.
+
+
+### Download Android direto — 0.4.1
+
+https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.4.1-032a7d9/Linha-de-Sombra-Copa-2022-Android-032a7d9.apk

@@ -7,7 +7,14 @@
 - APK passa a ser publicado também como GitHub Release, além do artifact do Actions.
 - Android versionCode 5 / versionName 0.4.1.
 - CI Windows/Validate também executam MobileTouchProbe.
-- Validação/build serão registradas após a execução do CI.
+- Validate run 35583074787: SUCCESS.
+- Build Windows run 35583074692: SUCCESS.
+- Build Android run 35583074710: SUCCESS.
+- MobileTouchProbe: SUCCESS.
+- Artifact Android: `linha-de-sombra-android-0.4.1-032a7d9`.
+- GitHub Release: `android-0.4.1-032a7d9`.
+- APK direto publicado e verificado por apksigner.
+- Commit validado: `032a7d943cf1fc1939b4ab391f0065acbdebef90`.
 
 
 ## 0.4.0 — Android + contraditório

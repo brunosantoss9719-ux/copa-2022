@@ -1,57 +1,67 @@
 # PROJECT_STATE
 
 ## Snapshot
-Versão: 0.4.0
+Versão: 0.4.1
 Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
 Targets validados: Windows x86_64 e Android arm64
-Commit de software/build validado: d3d0ea845e9ac853bb7f3452955368de6da893f0
+Commit de software/build validado: 032a7d943cf1fc1939b4ab391f0065acbdebef90
 
 ## Estado implementado
-- sala investigativa lateral 2.5D com quatro arquivos/alas progressivos;
-- 16 evidências data-driven com source/status;
-- cinco puzzles + reconstrução;
-- save/load compatível;
-- áudio procedural;
-- controles teclado/controle;
-- controles touch Android em paisagem: esquerda, direita, examinar/reconstruir e quadro;
-- painéis, botões, ScrollContainer e OptionButtons operáveis por toque;
-- Smoke e FlowProbe do caminho completo;
-- CI Windows + Android.
+- quatro arquivos/alas, 16 evidências e cinco puzzles;
+- reconstrução, dicas, save/load e áudio procedural;
+- teclado/controle + touch Android;
+- APK Android arm64 em paisagem;
+- Smoke, FlowProbe e MobileTouchProbe;
+- CI Windows + Android;
+- APK publicado como artifact e GitHub Release de download direto.
 
-## Android
-Preset: Android APK.
-Arquitetura: arm64-v8a.
-Orientação: paisagem.
-Render: GL Compatibility.
-ETC2/ASTC habilitado para export Android.
-APK de playtest usa assinatura debug gerada no CI; não é build de Play Store.
+## Android 0.4.1
+A 0.4.1 não altera claims, narrativa nem soluções dos puzzles. É um incremento de entrega e validação mobile.
 
-O primeiro Android export falhou apenas na etapa de empacotamento porque ETC2/ASTC não estava habilitado. Após adicionar `rendering/textures/vram_compression/import_etc2_astc=true`, a reexecução exportou e verificou o APK com apksigner.
+MobileTouchProbe valida criação dos controles, movimento touch, Examinar contextual e Quadro.
+
+Assinatura de playtest:
+- o workflow usa cache do debug keystore com chave `linha-de-sombra-android-debug-keystore-v1`;
+- a partir da 0.4.1, builds geradas com esse cache mantêm a mesma assinatura enquanto o cache persistir;
+- a 0.4.0 anterior usou chave efêmera diferente e pode exigir desinstalação única antes da 0.4.1.
 
 ## Fatos usados
-Claims ativos continuam LS-F001 a LS-F013.
-Nenhum claim, diálogo factual ou solução narrativa foi alterado para o porte Android.
+Claims ativos permanecem LS-F001 a LS-F013.
+Nenhum conteúdo político/processual foi alterado na 0.4.1.
 
 ## Validação automática
-Commit: d3d0ea845e9ac853bb7f3452955368de6da893f0.
-Validate run 35581278719: SUCCESS.
-Build Windows run 35581278726: SUCCESS.
-Build Android run 35581279290: SUCCESS.
-Smoke e FlowProbe: SUCCESS.
-APK: exportado e verificado por apksigner.
+Commit: 032a7d943cf1fc1939b4ab391f0065acbdebef90.
+Validate run 35583074787: SUCCESS.
+Build Windows run 35583074692: SUCCESS.
+Build Android run 35583074710: SUCCESS.
+Smoke: SUCCESS.
+FlowProbe: SUCCESS.
+MobileTouchProbe: SUCCESS.
+apksigner: SUCCESS.
+Publicação do GitHub Release: SUCCESS.
 
 ## Builds
-Windows: linha-de-sombra-0.4.0-d3d0ea8.
-Android: linha-de-sombra-android-0.4.0-d3d0ea8.
-Android Artifact ID: 10630735963.
-Android ZIP artifact: 28.102.023 bytes.
-Android artifact SHA-256: c6b1c460bcf7f380880d3e718ddc7b73051bb2824b53609c6443ecffb5550100.
-Retenção observada: até 05/10/2026.
+Windows artifact: `linha-de-sombra-0.4.1-032a7d9`.
+Windows artifact ID: 10630719434.
+Windows artifact ZIP SHA-256: 2c6dc3dfff490816ead3974ec9a10144bc5cd1b3877e62c08d959cc716a56a91.
+
+Android Actions artifact: `linha-de-sombra-android-0.4.1-032a7d9`.
+Android artifact ID: 10630851907.
+Android artifact ZIP SHA-256: ed033b4a7c5313b2668f9feca426b34114a366e0110360800c8ffba506500bdc.
+
+Android Release:
+- tag: `android-0.4.1-032a7d9`
+- release ID: 392829087
+- asset: `Linha-de-Sombra-Copa-2022-Android-032a7d9.apk`
+- asset ID: 578700024
+- APK: 28.336.019 bytes
+- APK SHA-256: 177d3a11d1f3e36c336b42525b87921e7ef16ef9c0fffe97d56592138ce843b3
+- download direto: https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.4.1-032a7d9/Linha-de-Sombra-Copa-2022-Android-032a7d9.apk
 
 ## Limitação humana
-O APK foi validado por exportação/assinatura e testes headless do jogo, mas ainda precisa de playtest físico Android para toque, escala visual, safe areas, desempenho e áudio no aparelho.
+O APK ainda precisa de execução física no aparelho para validar ergonomia real, escala, safe areas, desempenho e áudio.
 
 ## Próxima ação canônica
-Playtest humano Android da build `linha-de-sombra-android-0.4.0-d3d0ea8`. Registrar problemas concretos de toque/escala/layout e corrigi-los antes de qualquer nova expansão de conteúdo.
+Playtest humano Android da 0.4.1. Corrigir somente problemas observados no aparelho antes de expandir conteúdo.
