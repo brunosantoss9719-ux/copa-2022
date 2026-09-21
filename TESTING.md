@@ -6,26 +6,30 @@ godot --headless --path . --import
 godot --headless --path . --scene res://tests/Smoke.tscn
 ```
 
-Valida Main.tscn, nove evidências/source IDs, soluções corretas/incorretas dos três puzzles e save/load.
+Valida Main.tscn, doze evidências/source IDs, soluções corretas/incorretas dos quatro puzzles e save/load. Também verifica que a nota ficcional de método não pode ocupar um slot que exige prova judicial.
 
 ## Flow probe
 ```bash
 godot --headless --path . --scene res://tests/FlowProbe.tscn
 ```
 
-Percorre o caminho 0.2.1:
-1. inicia novo jogo;
-2. tenta acessar a Ala II e confirma o bloqueio físico;
-3. resolve primeira ala, cronologia, reconstrução e classificação;
-4. confirma liberação física/visual da Ala II;
-5. confirma a transição “ARQUIVO II”;
-6. abre o quadro e confirma foco automático no Puzzle 3;
-7. coleta as três evidências da segunda ala;
-8. resolve o rastro documental;
-9. confirma relatório final e save.
+Percorre o caminho 0.3:
+1. novo jogo e bloqueio inicial da Ala II;
+2. seis evidências da primeira ala;
+3. cronologia;
+4. reconstrução 3/3;
+5. classificação factual;
+6. liberação do Arquivo II;
+7. três evidências do rastro documental;
+8. Puzzle 3;
+9. liberação do Arquivo III;
+10. três evidências da individualização;
+11. foco automático no Puzzle 4;
+12. individualização;
+13. relatório final e save.
 
-## Nota de temporização
-O primeiro probe do polimento checou movimento e atualização visual antes do frame físico/_process correspondente e gerou falso negativo. O probe final aguarda o frame correto; o marco visual também é sincronizado imediatamente ao desbloquear a Ala II.
+## Incidente corrigido
+O primeiro FlowProbe 0.3 manteve uma asserção antiga que comparava as nove evidências coletadas até a Ala II com o total global. Como o 0.3 possui doze evidências, a asserção foi corrigida para 9 nesse ponto e 12 depois do Arquivo III.
 
 ## Export Windows
 ```bash
@@ -33,12 +37,12 @@ godot --headless --path . --export-release "Windows x86_64" dist/linha-de-sombra
 ```
 
 ## Última validação automática
-Commit: `3c95f0bcb008ecdbadb08af6df8277f167f1940d`.
-- Validate run 35542394710: sucesso.
+Commit: `f37634f300367aec5a106b2a86279f2d12bb7c60`.
+- Validate run 35549567654: sucesso.
 - Smoke: sucesso.
 - FlowProbe: sucesso.
-- Build Windows run 35542394689: sucesso.
-- Artifact: `linha-de-sombra-0.2.1-3c95f0b`.
+- Build Windows run 35549567628: sucesso.
+- Artifact: `linha-de-sombra-0.3.0-f37634f`.
 
 ## Validação humana pendente
-Legibilidade dos hotspots e marco da ala, conforto do áudio, parallax/câmera, navegação por controle e ritmo dos três puzzles.
+Legibilidade dos três arquivos/alas, conforto do áudio, parallax/câmera, navegação por controle, rolagem do quadro e sensação de dedução dos quatro puzzles.
