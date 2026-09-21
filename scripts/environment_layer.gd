@@ -4,6 +4,7 @@ extends Node2D
 @export var layer_kind := "far"
 
 var _phase := 0.0
+var _last_state_signature := ""
 
 func _process(delta: float) -> void:
 	_phase += delta
@@ -12,6 +13,28 @@ func _process(delta: float) -> void:
 		position.x = (camera.global_position.x - 640.0) * (1.0 - depth_factor)
 	if layer_kind == "far":
 		queue_redraw()
+	else:
+		var signature := _state_signature()
+		if signature != _last_state_signature:
+			_last_state_signature = signature
+			queue_redraw()
+
+func _state_signature() -> String:
+	return "%s:%s:%s:%s" % [
+		GameState.timeline_solved,
+		GameState.status_solved,
+		GameState.origin_solved,
+		GameState.individualization_solved
+	]
+
+func _active_sector_center() -> float:
+	if GameState.individualization_solved:
+		return 4350.0
+	if GameState.origin_solved:
+		return 3380.0
+	if GameState.status_solved:
+		return 2500.0
+	return 1030.0
 
 func _draw() -> void:
 	if layer_kind == "far":
@@ -63,6 +86,21 @@ func _draw_mid() -> void:
 		draw_rect(Rect2(x - 76, 124, 152, 10), Color("#263b44"), true)
 		draw_rect(Rect2(x - 54, 134, 108, 5), Color(0.60, 0.88, 0.84, 0.24), true)
 
+	# Cones de luz muito suaves dão volume e puxam o olhar para o setor ativo.
+	var active_x := _active_sector_center()
+	draw_colored_polygon(PackedVector2Array([
+		Vector2(active_x - 72, 139),
+		Vector2(active_x + 72, 139),
+		Vector2(active_x + 270, 552),
+		Vector2(active_x - 270, 552)
+	]), Color(0.47, 0.82, 0.78, 0.045))
+	for x in [790.0, 2500.0, 3380.0, 4350.0]:
+		var alpha := 0.022 if absf(x - active_x) > 10.0 else 0.05
+		draw_colored_polygon(PackedVector2Array([
+			Vector2(x - 45, 139), Vector2(x + 45, 139),
+			Vector2(x + 170, 552), Vector2(x - 170, 552)
+		]), Color(0.58, 0.74, 0.72, alpha))
+
 	# Setor A: triagem. Mesa longa, monitor e arquivo baixo.
 	draw_rect(Rect2(170, 394, 1670, 22), Color("#24323a"), true)
 	draw_rect(Rect2(190, 416, 1630, 92), Color("#111d24"), true)
@@ -100,6 +138,14 @@ func _draw_mid() -> void:
 	draw_line(Vector2(4267, 252), Vector2(4267, 474), Color("#4a5960"), 3.0)
 
 func _draw_near() -> void:
+	# Áreas ainda não acessíveis recuam para a sombra sem depender de uma barreira de HUD.
+	if not GameState.status_solved:
+		draw_rect(Rect2(2050, 90, 850, 462), Color(0.01, 0.02, 0.025, 0.42), true)
+	if not GameState.origin_solved:
+		draw_rect(Rect2(2900, 90, 900, 462), Color(0.01, 0.02, 0.025, 0.42), true)
+	if not GameState.individualization_solved:
+		draw_rect(Rect2(3800, 90, 1180, 462), Color(0.01, 0.02, 0.025, 0.42), true)
+
 	# Piso com faixas de perspectiva e reflexos de luz.
 	draw_rect(Rect2(-400, 552, 5700, 188), Color("#080f14"), true)
 	draw_line(Vector2(-400, 552), Vector2(5300, 552), Color("#40515a"), 3.0)
@@ -107,6 +153,17 @@ func _draw_near() -> void:
 		draw_line(Vector2(x, 552), Vector2(x + 96, 720), Color(0.20, 0.31, 0.36, 0.19), 1.0)
 	for x in [250, 790, 1330, 2260, 3220, 4140, 4580]:
 		draw_rect(Rect2(x - 96, 554, 192, 7), Color(0.43, 0.78, 0.73, 0.08), true)
+	var active_x := _active_sector_center()
+	draw_colored_polygon(PackedVector2Array([
+		Vector2(active_x - 260, 558),
+		Vector2(active_x + 260, 558),
+		Vector2(active_x + 420, 720),
+		Vector2(active_x - 420, 720)
+	]), Color(0.30, 0.62, 0.58, 0.035))
+
+	# Marcas arquitetônicas de setor: discretas, mas quebram a sensação de corredor contínuo.
+	for marker_x in [100.0, 2110.0, 2990.0, 3890.0]:
+		draw_rect(Rect2(marker_x, 535, 620, 3), Color(0.45, 0.72, 0.69, 0.11), true)
 
 	# Bases físicas sob as pistas: o objeto investigável deixa de "flutuar".
 	for x in [350, 650, 920, 1190, 1480, 1810]:
