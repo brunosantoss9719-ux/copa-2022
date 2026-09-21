@@ -1,73 +1,89 @@
 # PROJECT_STATE
 
 ## Snapshot
-Versão: 0.4.1
+Versão: 0.5.0
 Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
 Targets validados: Windows x86_64 e Android arm64
-Último commit de software/build validado: 032a7d943cf1fc1939b4ab391f0065acbdebef90
-Observação: commits posteriores em main podem ser apenas documentação com [skip ci]; não substituem o SHA de software/build acima.
+Último commit de software/build validado: 242258c0df8c13393218368880cae000973b4c84
 
 ## Estado implementado
-- quatro arquivos/alas, 16 evidências e cinco puzzles;
-- reconstrução, dicas, save/load e áudio procedural;
+- quatro setores investigativos, 16 evidências e cinco problemas de dedução;
+- exploração lateral 2.5D, reconstrução espacial, dicas, save/load e áudio procedural;
 - teclado/controle + touch Android;
-- APK Android arm64 em paisagem;
+- Windows x86_64 e APK Android arm64;
 - Smoke, FlowProbe e MobileTouchProbe;
-- CI Windows + Android;
-- APK publicado como artifact e GitHub Release de download direto.
+- CI Windows + Android e APK publicado em GitHub Release.
 
-## Android 0.4.1
-A 0.4.1 não altera claims, narrativa nem soluções dos puzzles. É um incremento de entrega e validação mobile.
+## Reforma 0.5.0 — jogabilidade
+A 0.5.0 substitui o antigo quadro com vários OptionButtons empilhados por uma investigação focada em uma pergunta ativa por vez.
 
-MobileTouchProbe valida criação dos controles, movimento touch, Examinar contextual e Quadro.
+Fluxo atual:
+- explorar o espaço e localizar peças;
+- examinar a peça sem receber a solução do puzzle;
+- abrir a hipótese ativa;
+- selecionar cartões na bandeja e encaixá-los em slots de raciocínio;
+- classificar autoridade documental com carimbos;
+- voltar à sala para confrontar a cronologia em três projeções espaciais;
+- liberar novos setores e repetir o ciclo com nova pergunta;
+- concluir o contraditório separando tese de defesa de resultado judicial.
 
-Assinatura de playtest:
-- o workflow usa cache do debug keystore com chave `linha-de-sombra-android-debug-keystore-v1`;
-- a partir da 0.4.1, builds geradas com esse cache mantêm a mesma assinatura enquanto o cache persistir;
-- a 0.4.0 anterior usou chave efêmera diferente e pode exigir desinstalação única antes da 0.4.1.
+O painel de evidência não revela mais o factual_status das peças da triagem antes da etapa de classificação.
+
+## Reforma 0.5.0 — visual
+O cenário procedural foi recomposto em setores com identidade própria:
+- Setor A: triagem, mesa longa, monitor e arquivo;
+- Setor B: arquivo processual com estantes;
+- Setor C: mesa de comparação e painéis;
+- Setor D: dois painéis contrapostos para tese e resultado.
+
+Também foram redesenhados:
+- silhueta da investigadora;
+- evidências, com formas distintas por natureza documental;
+- projeções da reconstrução;
+- portais de acesso entre setores;
+- janelas, chuva, profundidade arquitetônica, piso e primeiro plano.
+
+A arte continua procedural/provisória. CI não mede qualidade estética; a próxima rodada deve ser guiada por leitura visual e sensação real de jogo, não por expansão de conteúdo.
 
 ## Fatos usados
 Claims ativos permanecem LS-F001 a LS-F013.
-Nenhum conteúdo político/processual foi alterado na 0.4.1.
+Nenhum claim político/processual, resultado judicial ou tese de defesa foi alterado na 0.5.0.
 
 ## Validação automática
-Commit: 032a7d943cf1fc1939b4ab391f0065acbdebef90.
-Validate run 35583074787: SUCCESS.
-Build Windows run 35583074692: SUCCESS.
-Build Android run 35583074710: SUCCESS.
+Commit: 242258c0df8c13393218368880cae000973b4c84.
+Validate run 35585327343: SUCCESS.
+Build Windows run 35585327331: SUCCESS.
+Build Android run 35585327567: SUCCESS.
 Smoke: SUCCESS.
 FlowProbe: SUCCESS.
 MobileTouchProbe: SUCCESS.
+Export Windows: SUCCESS.
+Export Android: SUCCESS.
 apksigner: SUCCESS.
-Publicação do GitHub Release: SUCCESS.
+GitHub Release: SUCCESS.
 
 ## Builds
-Windows artifact: `linha-de-sombra-0.4.1-032a7d9`.
-Windows artifact ID: 10630719434.
-Windows artifact ZIP SHA-256: 2c6dc3dfff490816ead3974ec9a10144bc5cd1b3877e62c08d959cc716a56a91.
+Windows artifact: `linha-de-sombra-0.5.0-242258c`.
+Windows artifact ID: 10632310441.
+Windows artifact ZIP SHA-256: 91d0160a340500f43002223861e2f50e1f63ba1cef3bce15ba34a59d2d72806b.
 
-Android Actions artifact: `linha-de-sombra-android-0.4.1-032a7d9`.
-Android artifact ID: 10630851907.
-Android artifact ZIP SHA-256: ed033b4a7c5313b2668f9feca426b34114a366e0110360800c8ffba506500bdc.
+Android Actions artifact: `linha-de-sombra-android-0.5.0-242258c`.
+Android artifact ID: 10632006968.
+Android artifact ZIP SHA-256: 45a11dec269638394c63bc97853827ee0acf89180188c6d996f87269bfbfe323.
 
 Android Release:
-- tag: `android-0.4.1-032a7d9`
-- release ID: 392829087
-- asset: `Linha-de-Sombra-Copa-2022-Android-032a7d9.apk`
-- asset ID: 578700024
-- APK: 28.336.019 bytes
-- APK SHA-256: 177d3a11d1f3e36c336b42525b87921e7ef16ef9c0fffe97d56592138ce843b3
-- download direto: https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.4.1-032a7d9/Linha-de-Sombra-Copa-2022-Android-032a7d9.apk
+- tag: `android-0.5.0-242258c`
+- release ID: 392844173
+- asset: `Linha-de-Sombra-Copa-2022-Android-242258c.apk`
+- asset ID: 578740529
+- APK: 28.352.403 bytes
+- APK SHA-256: 233c637347141aa297b3ba4c51d6317503c3f0f4a64cea73331aafc438a61a50
+- download direto: https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.5.0-242258c/Linha-de-Sombra-Copa-2022-Android-242258c.apk
 
-## Reconciliação canônica — 21/09/2026
-O GitHub já estava em 0.4.1 enquanto parte dos documentos 00/06/07/08 do Drive ainda descrevia 0.4.0.
-Nesta retomada, o handoff foi explicitado aqui e o Drive foi reconciliado para 0.4.1.
-Os documentos 09 e 10 já continham os dados corretos da 0.4.1.
-
-## Limitação humana
-O APK ainda precisa de execução física no aparelho para validar ergonomia real, escala, safe areas, desempenho e áudio.
+## Feedback humano que motivou 0.5.0
+A 0.4.1 foi considerada visualmente fraca e com jogabilidade sem sentido, especialmente porque o quadro se comportava como um formulário longo. A 0.5.0 é a resposta direta a esse problema e não uma expansão de conteúdo.
 
 ## Próxima ação canônica
-Playtest humano Android da 0.4.1. Corrigir somente problemas observados no aparelho antes de expandir conteúdo.
+Fazer um passe de qualidade sobre a 0.5.0 focado em composição, legibilidade, sensação de descoberta e qualidade dos puzzles. Corrigir o que ainda parecer genérico, feio, óbvio ou burocrático antes de criar novo arquivo/caso.
