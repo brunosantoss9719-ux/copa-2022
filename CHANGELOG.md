@@ -4,6 +4,12 @@
 - Controles touch em paisagem adicionados para Android.
 - Preset Android APK arm64 adicionado.
 - Workflow Build Android gera APK debug assinado para playtest.
+- ETC2/ASTC habilitado após a primeira tentativa de export identificar o requisito Android.
+- Validate run 35581278719: SUCCESS.
+- Build Windows run 35581278726: SUCCESS.
+- Build Android run 35581279290: SUCCESS.
+- Android artifact: `linha-de-sombra-android-0.4.0-d3d0ea8`.
+- Commit Android validado: `d3d0ea845e9ac853bb7f3452955368de6da893f0`.
 
 ## 0.4.0 — contraditório
 - Novo Arquivo IV, liberado após a individualização.

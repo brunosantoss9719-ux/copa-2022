@@ -6,36 +6,42 @@ godot --headless --path . --import
 godot --headless --path . --scene res://tests/Smoke.tscn
 ```
 
-Valida Main.tscn, 16 evidências/source IDs, soluções corretas/incorretas dos cinco puzzles e save/load. Inclui teste específico para impedir que tese defensiva e decisão judicial sejam invertidas.
+Valida Main.tscn, 16 evidências/source IDs, cinco puzzles e save/load.
 
-## Flow probe
+## FlowProbe
 ```bash
 godot --headless --path . --scene res://tests/FlowProbe.tscn
 ```
 
-Percorre o caminho 0.4:
-1. novo jogo e Arquivo I;
-2. cronologia + reconstrução + classificação;
-3. Arquivo II e rastro documental;
-4. Arquivo III e individualização;
-5. liberação física/visual do Arquivo IV;
-6. coleta de quatro peças do contraditório;
-7. foco automático no Puzzle 5;
-8. pareamento de tese e resultado para Bernardo e Márcio;
-9. relatório final e save.
+Percorre o caminho completo 0.4 até o relatório final.
 
-## Export Windows
-```bash
-godot --headless --path . --export-release "Windows x86_64" dist/linha-de-sombra-copa-2022.exe
-```
+## Windows
+Run: 35581278726 — SUCCESS.
 
-## Última validação automática
-Commit: `2ec4ed10e8926e12074e63cf2531173c7ac81f1e`.
-- Validate run 35579286186: sucesso.
-- Smoke: sucesso.
-- FlowProbe: sucesso.
-- Build Windows run 35579286166: sucesso.
-- Artifact: `linha-de-sombra-0.4.0-2ec4ed1`.
+## Android
+Preset: `Android APK`.
+Workflow: `.github/workflows/build-android.yml`.
+Etapas:
+1. Java 17;
+2. Godot 4.7.2 + templates;
+3. Android SDK/build-tools;
+4. debug keystore efêmera no runner;
+5. import + Smoke;
+6. FlowProbe;
+7. export debug APK;
+8. `apksigner verify --verbose`;
+9. upload do artifact.
 
-## Validação humana pendente
-Legibilidade das quatro alas, navegação por controle, rolagem do quadro, conforto do áudio e, principalmente, se os cinco puzzles mantêm sensação de dedução em vez de repetição de formulários.
+Primeira tentativa Android: falhou somente porque ETC2/ASTC não estava habilitado.
+Correção: `rendering/textures/vram_compression/import_etc2_astc=true`.
+
+Validação final:
+- Commit: `d3d0ea845e9ac853bb7f3452955368de6da893f0`.
+- Validate run 35581278719: SUCCESS.
+- Build Android run 35581279290: SUCCESS.
+- Artifact: `linha-de-sombra-android-0.4.0-d3d0ea8`.
+- Artifact ID: 10630735963.
+- SHA-256 do artifact ZIP: `c6b1c460bcf7f380880d3e718ddc7b73051bb2824b53609c6443ecffb5550100`.
+
+## Playtest humano Android pendente
+Verificar: botões esquerda/direita, Examinar/Reconstruir, Quadro, toque em painéis/selects, rolagem, escala 16:9/20:9, safe areas, áudio, desempenho e instalação do APK.

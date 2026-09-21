@@ -5,55 +5,53 @@ Versão: 0.4.0
 Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
-Target: Windows x86_64
-Commit de software/build validado: 2ec4ed10e8926e12074e63cf2531173c7ac81f1e
+Targets validados: Windows x86_64 e Android arm64
+Commit de software/build validado: d3d0ea845e9ac853bb7f3452955368de6da893f0
 
 ## Estado implementado
 - sala investigativa lateral 2.5D com quatro arquivos/alas progressivos;
 - 16 evidências data-driven com source/status;
-- Puzzle 1: cronologia documental;
-- reconstrução curta;
-- Puzzle 2: classificação factual;
-- Puzzle 3: rastro documental de “Copa 2022”;
-- Puzzle 4: individualização de status processual;
-- Puzzle 5: contraditório — tese defensiva ≠ decisão judicial;
-- save/load compatível com saves anteriores;
+- cinco puzzles + reconstrução;
+- save/load compatível;
 - áudio procedural;
+- controles teclado/controle;
+- controles touch Android em paisagem: esquerda, direita, examinar/reconstruir e quadro;
+- painéis, botões, ScrollContainer e OptionButtons operáveis por toque;
 - Smoke e FlowProbe do caminho completo;
-- CI/build Windows.
+- CI Windows + Android.
 
-## Arquivo IV — Contraditório
-O Arquivo IV é liberado após a individualização. Ele introduz TESE_DE_DEFESA no caminho crítico. O jogador monta dois pares documentais: o que a defesa sustentou e o que o tribunal decidiu depois, sem avaliar politicamente ou juridicamente qual tese “é melhor”.
+## Android
+Preset: Android APK.
+Arquitetura: arm64-v8a.
+Orientação: paisagem.
+Render: GL Compatibility.
+ETC2/ASTC habilitado para export Android.
+APK de playtest usa assinatura debug gerada no CI; não é build de Play Store.
 
-Pares atuais:
-- Bernardo: defesa pediu absolvição e questionou força/contexto das provas; resultado judicial registrou condenação.
-- Márcio: defesa sustentou participação limitada e comparação com acusações rejeitadas; resultado judicial registrou condenação após reenquadramento para crimes menos graves do que os apontados na denúncia.
+O primeiro Android export falhou apenas na etapa de empacotamento porque ETC2/ASTC não estava habilitado. Após adicionar `rendering/textures/vram_compression/import_etc2_astc=true`, a reexecução exportou e verificou o APK com apksigner.
 
 ## Fatos usados
-Claims ativos: LS-F001 a LS-F013.
-Novos no 0.4:
-- LS-F011 — TESE_DE_DEFESA: sustentação da defesa de Bernardo.
-- LS-F012 — TESE_DE_DEFESA: sustentação da defesa de Márcio.
-- LS-F013 — DECISÃO_JUDICIAL: resultado com reenquadramento de condutas de Márcio e Ronald.
-As teses permanecem atribuídas às defesas; o resultado permanece separado como decisão judicial.
+Claims ativos continuam LS-F001 a LS-F013.
+Nenhum claim, diálogo factual ou solução narrativa foi alterado para o porte Android.
 
 ## Validação automática
-Validate run 35579286186: SUCCESS.
-Build Windows run 35579286166: SUCCESS.
-Smoke: 16 evidências/source IDs, cinco puzzles e save/load.
-FlowProbe: Arquivo I → II → III → IV → Puzzle 5 → relatório final → save.
-A validação também rejeita inversão entre tese defensiva e resultado judicial.
+Commit: d3d0ea845e9ac853bb7f3452955368de6da893f0.
+Validate run 35581278719: SUCCESS.
+Build Windows run 35581278726: SUCCESS.
+Build Android run 35581279290: SUCCESS.
+Smoke e FlowProbe: SUCCESS.
+APK: exportado e verificado por apksigner.
 
-## Build
-Artifact: linha-de-sombra-0.4.0-2ec4ed1
-Artifact ID: 10629756056
-Tamanho do ZIP: 38.991.253 bytes
-SHA-256: a6d2d942f7ffbec06aaccaee5d90f41e46c84fceaddc2cb79cd6194c2aeb7a8f
+## Builds
+Windows: linha-de-sombra-0.4.0-d3d0ea8.
+Android: linha-de-sombra-android-0.4.0-d3d0ea8.
+Android Artifact ID: 10630735963.
+Android ZIP artifact: 28.102.023 bytes.
+Android artifact SHA-256: c6b1c460bcf7f380880d3e718ddc7b73051bb2824b53609c6443ecffb5550100.
 Retenção observada: até 05/10/2026.
-Build produzida a partir do commit 2ec4ed10e8926e12074e63cf2531173c7ac81f1e.
 
 ## Limitação humana
-Ainda não existe playtest humano da build 0.4.0. Automação não valida conforto, legibilidade percebida ou diversão/ritmo.
+O APK foi validado por exportação/assinatura e testes headless do jogo, mas ainda precisa de playtest físico Android para toque, escala visual, safe areas, desempenho e áudio no aparelho.
 
 ## Próxima ação canônica
-Playtest humano da build 0.4.0 no Windows. Sem bloqueadores, o próximo trabalho não deve simplesmente adicionar outra ala: avaliar estrutura e variedade mecânica com base no playtest; qualquer novo conteúdo factual exige claim no ledger.
+Playtest humano Android da build `linha-de-sombra-android-0.4.0-d3d0ea8`. Registrar problemas concretos de toque/escala/layout e corrigi-los antes de qualquer nova expansão de conteúdo.
