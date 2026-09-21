@@ -762,7 +762,7 @@ func _build_sequence_board(stage: String) -> void:
 		var evidence_id := str(answer[i]) if i < answer.size() else ""
 		var slot_text := "＋ ENCAIXAR EVIDÊNCIA"
 		if not evidence_id.is_empty():
-			slot_text = "▣ %s" % _short_title(evidence_id, 62)
+			slot_text = "▣ %s" % _board_card_label(evidence_id, stage)
 		var slot_button := _make_button(slot_text, Callable(self, "_place_selected_in_slot").bind(i), 48)
 		slot_box.add_child(slot_button)
 		board_slot_buttons.append(slot_button)
@@ -778,7 +778,7 @@ func _build_sequence_board(stage: String) -> void:
 	if board_selected_evidence_id.is_empty():
 		board_feedback.text = "Selecione uma peça na bandeja para começar." if not complete else "Linha preenchida. Teste a hipótese quando estiver satisfeito."
 	else:
-		board_feedback.text = "Selecionada: %s. Agora toque no slot desejado." % _short_title(board_selected_evidence_id, 72)
+		board_feedback.text = "Selecionada: %s. Agora toque no slot desejado." % _board_card_label(board_selected_evidence_id, stage)
 
 func _add_evidence_card(evidence_id: String, stage: String) -> void:
 	var item := EvidenceDB.get_evidence(evidence_id)
@@ -788,7 +788,7 @@ func _add_evidence_card(evidence_id: String, stage: String) -> void:
 	var prefix := "✓ " if used else ""
 	if evidence_id == board_selected_evidence_id:
 		prefix = "◆ "
-	var card := _make_button("%s%s" % [prefix, _short_title(evidence_id, 54)], Callable(self, "_select_board_evidence").bind(evidence_id), 52)
+	var card := _make_button("%s%s" % [prefix, _board_card_label(evidence_id, stage)], Callable(self, "_select_board_evidence").bind(evidence_id), 52)
 	if evidence_id == board_selected_evidence_id:
 		card.add_theme_stylebox_override("normal", _button_style(Color("#1d3a3d"), Color(0.48, 0.84, 0.78, 0.92)))
 	board_tray.add_child(card)
@@ -897,6 +897,44 @@ func _build_complete_board() -> void:
 	var report_button := _make_button("ABRIR RELATÓRIO", _show_conclusion, 50)
 	box.add_child(report_button)
 	board_tray.add_child(_make_label("Você ainda pode voltar à sala e revisar qualquer peça descoberta.", 13, true, Color("#718b90")))
+
+func _board_card_label(evidence_id: String, stage: String) -> String:
+	var labels := {}
+	match stage:
+		"timeline":
+			labels = {
+				"ev_pf_2024": "2024 · comunicação da investigação",
+				"ev_copa_label": "AP 2696 · referência ao nome",
+				"ev_stf_vote_2025": "AP 2696 · voto do relator",
+				"ev_stf_judgment_2025": "resultado colegiado · julgamento",
+				"ev_anpp_2026": "decisão posterior · acordos",
+				"ev_fiction_draft": "nota interna · analista"
+			}
+		"origin":
+			labels = {
+				"ev_pet13236_2024": "Peça A · decisão publicada em 2024",
+				"ev_denuncia_received_2025": "Peça B · decisão de maio de 2025",
+				"ev_pgr_argument_2025": "Peça C · manifestação da acusação",
+				"ev_stf_judgment_2025": "Peça D · resultado do julgamento"
+			}
+		"individualization":
+			labels = {
+				"ev_denuncia_filtered_2025": "Peça A · recebimento parcial",
+				"ev_acquittal_2025": "Peça B · resultado individual",
+				"ev_anpp_2026": "Peça C · decisão posterior individual",
+				"ev_group_method_note": "Peça D · nota interna de método"
+			}
+		"contradictory":
+			labels = {
+				"ev_defense_bernardo_2025": "Bernardo · sustentação oral",
+				"ev_outcome_bernardo_2025": "Bernardo · julgamento",
+				"ev_defense_marcio_2025": "Márcio · sustentação oral",
+				"ev_outcome_marcio_2025": "Márcio · julgamento",
+				"ev_pgr_argument_2025": "PGR · sustentação oral"
+			}
+	if labels.has(evidence_id):
+		return str(labels[evidence_id])
+	return _short_title(evidence_id, 54)
 
 func _short_title(evidence_id: String, limit := 58) -> String:
 	var item := EvidenceDB.get_evidence(evidence_id)
