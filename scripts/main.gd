@@ -49,6 +49,9 @@ var board_validate_button: Button
 var board_hint_button: Button
 var board_reset_button: Button
 var board_close_button: Button
+var board_preview_title: Label
+var board_preview_meta: Label
+var board_preview_body: Label
 var board_stage := ""
 var board_selected_evidence_id := ""
 var board_card_buttons: Dictionary = {}
@@ -401,8 +404,26 @@ func _build_board_panel() -> void:
 	tray_root.add_theme_constant_override("separation", 8)
 	tray_margin.add_child(tray_root)
 	tray_root.add_child(_make_label("BANDEJA DE EVIDÊNCIAS", 13, false, Color("#718f94")))
+
+	var preview_panel := PanelContainer.new()
+	preview_panel.custom_minimum_size = Vector2(0, 132)
+	preview_panel.add_theme_stylebox_override("panel", _button_style(Color("#101e24"), Color(0.28, 0.50, 0.51, 0.46)))
+	tray_root.add_child(preview_panel)
+	var preview_margin := _make_margin(14, 14, 10, 10)
+	preview_panel.add_child(preview_margin)
+	var preview_box := VBoxContainer.new()
+	preview_box.add_theme_constant_override("separation", 4)
+	preview_margin.add_child(preview_box)
+	board_preview_title = _make_label("SELECIONE UMA PEÇA", 14, true, Color("#dce9e8"))
+	preview_box.add_child(board_preview_title)
+	board_preview_meta = _make_label("A bandeja usa códigos neutros.", 11, true, Color("#779095"))
+	preview_box.add_child(board_preview_meta)
+	board_preview_body = _make_label("Abra uma peça para reler o que ela realmente diz antes de encaixá-la.", 12, true, Color("#a9bdbf"))
+	board_preview_body.custom_minimum_size = Vector2(0, 58)
+	preview_box.add_child(board_preview_body)
+
 	var tray_scroll := ScrollContainer.new()
-	tray_scroll.custom_minimum_size = Vector2(0, 330)
+	tray_scroll.custom_minimum_size = Vector2(0, 190)
 	tray_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	tray_root.add_child(tray_scroll)
 	board_tray = VBoxContainer.new()
@@ -550,9 +571,12 @@ func _on_evidence_activated(evidence_id: String) -> void:
 	var item := EvidenceDB.get_evidence(evidence_id)
 	if item.is_empty():
 		return
-	if GameState.discover_evidence(evidence_id):
+	var newly_discovered := GameState.discover_evidence(evidence_id)
+	if newly_discovered:
 		AudioManager.play_discovery()
 		SaveManager.save_game()
+	else:
+		AudioManager.play_paper()
 
 	evidence_title.text = str(item.get("title", "Evidência"))
 	var status_code := str(item.get("factual_status", ""))
@@ -710,7 +734,7 @@ func _refresh_board() -> void:
 	_clear_container(board_tray)
 
 	board_stage_label.text = "HIPÓTESE %d/6  •  %s" % [_stage_number(board_stage), _stage_name(board_stage)]
-	board_progress.text = "%d/%d peças localizadas" % [GameState.discovered_evidence.size(), EvidenceDB.evidence_count()]
+	board_progress.text = _stage_progress_text(board_stage)
 	board_question_label.text = _stage_question(board_stage)
 	board_instruction_label.text = _stage_instruction(board_stage)
 
@@ -726,6 +750,42 @@ func _refresh_board() -> void:
 		_build_reconstruction_board()
 	else:
 		_build_complete_board()
+	_refresh_board_preview()
+
+func _stage_progress_text(stage: String) -> String:
+	if stage == "reconstruction":
+		return "reconstrução %d/3  •  dossiê %d/%d" % [GameState.reconstruction_step, GameState.discovered_evidence.size(), EvidenceDB.evidence_count()]
+	if stage == "status":
+		var ids := ["ev_pf_2024", "ev_stf_judgment_2025", "ev_fiction_draft"]
+		var found := 0
+		for evidence_id in ids:
+			if GameState.has_evidence(evidence_id):
+				found += 1
+		return "peças relevantes %d/%d  •  dossiê %d/%d" % [found, ids.size(), GameState.discovered_evidence.size(), EvidenceDB.evidence_count()]
+	var candidates := _stage_evidence_ids(stage)
+	if not candidates.is_empty():
+		var found := 0
+		for evidence_id in candidates:
+			if GameState.has_evidence(str(evidence_id)):
+				found += 1
+		return "peças deste problema %d/%d  •  dossiê %d/%d" % [found, candidates.size(), GameState.discovered_evidence.size(), EvidenceDB.evidence_count()]
+	return "dossiê %d/%d" % [GameState.discovered_evidence.size(), EvidenceDB.evidence_count()]
+
+func _refresh_board_preview() -> void:
+	if board_preview_title == null or board_preview_meta == null or board_preview_body == null:
+		return
+	if board_selected_evidence_id.is_empty():
+		board_preview_title.text = "SELECIONE UMA PEÇA"
+		board_preview_meta.text = "Os cartões exibem só um código de arquivo."
+		board_preview_body.text = "A decisão vem do conteúdo que você já examinou, não do rótulo do botão."
+		return
+	var item := EvidenceDB.get_evidence(board_selected_evidence_id)
+	if item.is_empty():
+		return
+	var source := EvidenceDB.get_source(str(item.get("source_id", "")))
+	board_preview_title.text = str(item.get("title", "Peça do dossiê"))
+	board_preview_meta.text = "%s  •  %s" % [str(item.get("source_id", "")), str(source.get("label", "fonte registrada"))]
+	board_preview_body.text = str(item.get("summary", ""))
 
 func _stage_name(stage: String) -> String:
 	match stage:
@@ -749,25 +809,35 @@ func _build_sequence_board(stage: String) -> void:
 	var prompts := _stage_prompts(stage)
 	var answer := _get_sequence_answer(stage)
 
-	for i in range(prompts.size()):
-		var slot_panel := PanelContainer.new()
-		slot_panel.add_theme_stylebox_override("panel", _button_style(Color("#101f26"), Color(0.30, 0.49, 0.51, 0.42)))
-		board_workspace.add_child(slot_panel)
-		var margin := _make_margin(14, 14, 10, 10)
-		slot_panel.add_child(margin)
-		var slot_box := VBoxContainer.new()
-		slot_box.add_theme_constant_override("separation", 5)
-		margin.add_child(slot_box)
-		slot_box.add_child(_make_label(str(prompts[i]), 13, true, Color("#9eb5b8")))
-		var evidence_id := str(answer[i]) if i < answer.size() else ""
-		var slot_text := "＋ ENCAIXAR EVIDÊNCIA"
-		if not evidence_id.is_empty():
-			slot_text = "▣ %s" % _board_card_label(evidence_id, stage)
-		var slot_button := _make_button(slot_text, Callable(self, "_place_selected_in_slot").bind(i), 48)
-		slot_box.add_child(slot_button)
-		board_slot_buttons.append(slot_button)
+	if stage == "timeline":
+		var timeline_row := HBoxContainer.new()
+		timeline_row.add_theme_constant_override("separation", 8)
+		board_workspace.add_child(timeline_row)
+		for i in range(prompts.size()):
+			timeline_row.add_child(_make_reasoning_slot(stage, str(prompts[i]), str(answer[i]), i, Vector2(208, 170)))
+	elif stage == "contradictory":
+		var pairs := HBoxContainer.new()
+		pairs.add_theme_constant_override("separation", 10)
+		board_workspace.add_child(pairs)
+		for pair_index in range(2):
+			var pair_panel := PanelContainer.new()
+			pair_panel.custom_minimum_size = Vector2(320, 300)
+			pair_panel.add_theme_stylebox_override("panel", _button_style(Color("#0e1b22"), Color(0.34, 0.46, 0.52, 0.48)))
+			pairs.add_child(pair_panel)
+			var pair_margin := _make_margin(12, 12, 10, 10)
+			pair_panel.add_child(pair_margin)
+			var pair_box := VBoxContainer.new()
+			pair_box.add_theme_constant_override("separation", 8)
+			pair_margin.add_child(pair_box)
+			pair_box.add_child(_make_label("DOSSIÊ %s" % ("BERNARDO" if pair_index == 0 else "MÁRCIO"), 12, false, Color("#7fa2a6")))
+			var first := pair_index * 2
+			pair_box.add_child(_make_reasoning_slot(stage, str(prompts[first]), str(answer[first]), first, Vector2(0, 112)))
+			pair_box.add_child(_make_reasoning_slot(stage, str(prompts[first + 1]), str(answer[first + 1]), first + 1, Vector2(0, 112)))
+	else:
+		for i in range(prompts.size()):
+			board_workspace.add_child(_make_reasoning_slot(stage, str(prompts[i]), str(answer[i]), i, Vector2(0, 86)))
 
-	board_tray.add_child(_make_label("Toque numa peça; depois toque no slot.", 12, true, Color("#779095")))
+	board_tray.add_child(_make_label("Selecione um código, releia a prévia e só então encaixe.", 12, true, Color("#779095")))
 	for evidence_id in _stage_evidence_ids(stage):
 		if not GameState.has_evidence(str(evidence_id)):
 			continue
@@ -779,6 +849,28 @@ func _build_sequence_board(stage: String) -> void:
 		board_feedback.text = "Selecione uma peça na bandeja para começar." if not complete else "Linha preenchida. Teste a hipótese quando estiver satisfeito."
 	else:
 		board_feedback.text = "Selecionada: %s. Agora toque no slot desejado." % _board_card_label(board_selected_evidence_id, stage)
+
+func _make_reasoning_slot(stage: String, prompt: String, evidence_id: String, index: int, min_size: Vector2) -> PanelContainer:
+	var slot_panel := PanelContainer.new()
+	slot_panel.custom_minimum_size = min_size
+	slot_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slot_panel.add_theme_stylebox_override("panel", _button_style(Color("#101f26"), Color(0.30, 0.49, 0.51, 0.42)))
+	var margin := _make_margin(12, 12, 9, 9)
+	slot_panel.add_child(margin)
+	var slot_box := VBoxContainer.new()
+	slot_box.add_theme_constant_override("separation", 5)
+	margin.add_child(slot_box)
+	var prompt_label := _make_label(prompt, 12, true, Color("#9eb5b8"))
+	prompt_label.custom_minimum_size = Vector2(0, 36)
+	slot_box.add_child(prompt_label)
+	var slot_text := "＋ FIXAR PEÇA"
+	if not evidence_id.is_empty():
+		slot_text = "▣ %s" % _board_card_label(evidence_id, stage)
+	var slot_button := _make_button(slot_text, Callable(self, "_place_selected_in_slot").bind(index), 44)
+	slot_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	slot_box.add_child(slot_button)
+	board_slot_buttons.append(slot_button)
+	return slot_panel
 
 func _add_evidence_card(evidence_id: String, stage: String) -> void:
 	var item := EvidenceDB.get_evidence(evidence_id)
@@ -799,7 +891,7 @@ func _select_board_evidence(evidence_id: String) -> void:
 		board_selected_evidence_id = ""
 	else:
 		board_selected_evidence_id = evidence_id
-	AudioManager.play_ui()
+	AudioManager.play_pin()
 	_refresh_board()
 
 func _place_selected_in_slot(index: int) -> void:
@@ -821,7 +913,7 @@ func _place_selected_in_slot(index: int) -> void:
 	answer[index] = board_selected_evidence_id
 	_set_sequence_answer(board_stage, answer)
 	board_selected_evidence_id = ""
-	AudioManager.play_ui()
+	AudioManager.play_pin()
 	_refresh_board()
 
 func _build_status_board() -> void:
@@ -833,7 +925,7 @@ func _build_status_board() -> void:
 		var assigned := str(status_answer.get(evidence_id, ""))
 		var text := "PEÇA AINDA NÃO LOCALIZADA"
 		if discovered:
-			text = _short_title(evidence_id, 62)
+			text = _board_card_label(evidence_id, "status")
 			if not assigned.is_empty():
 				text += "\nCARIMBO: %s" % _status_display(assigned)
 		var button := _make_button(text, Callable(self, "_select_status_evidence").bind(evidence_id), 72)
@@ -854,7 +946,7 @@ func _build_status_board() -> void:
 	if board_selected_evidence_id.is_empty():
 		board_feedback.text = "Escolha uma peça. Depois aplique o carimbo que descreve a autoridade daquela afirmação."
 	else:
-		board_feedback.text = "Peça selecionada: %s." % _short_title(board_selected_evidence_id, 72)
+		board_feedback.text = "Peça selecionada: %s. Releia a prévia antes de carimbar." % _board_card_label(board_selected_evidence_id, "status")
 
 func _select_status_evidence(evidence_id: String) -> void:
 	if not GameState.has_evidence(evidence_id):
@@ -868,7 +960,7 @@ func _apply_status_stamp(status_code: String) -> void:
 		return
 	status_answer[board_selected_evidence_id] = status_code
 	board_selected_evidence_id = ""
-	AudioManager.play_ui()
+	AudioManager.play_stamp()
 	_refresh_board()
 
 func _build_reconstruction_board() -> void:
@@ -903,38 +995,44 @@ func _board_card_label(evidence_id: String, stage: String) -> String:
 	match stage:
 		"timeline":
 			labels = {
-				"ev_pf_2024": "2024 · comunicação da investigação",
-				"ev_copa_label": "AP 2696 · referência ao nome",
-				"ev_stf_vote_2025": "AP 2696 · voto do relator",
-				"ev_stf_judgment_2025": "resultado colegiado · julgamento",
-				"ev_anpp_2026": "decisão posterior · acordos",
-				"ev_fiction_draft": "nota interna · analista"
+				"ev_pf_2024": "A-01 · 2024",
+				"ev_copa_label": "A-02 · AP 2696",
+				"ev_stf_vote_2025": "A-03 · AP 2696",
+				"ev_stf_judgment_2025": "A-04 · 18/11/2025",
+				"ev_anpp_2026": "A-05 · 2026",
+				"ev_fiction_draft": "A-06 · NOTA INTERNA"
+			}
+		"status":
+			labels = {
+				"ev_pf_2024": "A-01",
+				"ev_stf_judgment_2025": "A-04",
+				"ev_fiction_draft": "A-06"
 			}
 		"origin":
 			labels = {
-				"ev_pet13236_2024": "Peça A · decisão publicada em 2024",
-				"ev_denuncia_received_2025": "Peça B · decisão de maio de 2025",
-				"ev_pgr_argument_2025": "Peça C · manifestação da acusação",
-				"ev_stf_judgment_2025": "Peça D · resultado do julgamento"
+				"ev_pet13236_2024": "B-01 · 19/11/2024",
+				"ev_denuncia_received_2025": "B-02 · 20/05/2025",
+				"ev_pgr_argument_2025": "B-03 · 11/11/2025",
+				"ev_stf_judgment_2025": "A-04 · 18/11/2025"
 			}
 		"individualization":
 			labels = {
-				"ev_denuncia_filtered_2025": "Peça A · recebimento parcial",
-				"ev_acquittal_2025": "Peça B · resultado individual",
-				"ev_anpp_2026": "Peça C · decisão posterior individual",
-				"ev_group_method_note": "Peça D · nota interna de método"
+				"ev_denuncia_filtered_2025": "C-01 · 20/05/2025",
+				"ev_acquittal_2025": "C-02 · 18/11/2025",
+				"ev_anpp_2026": "A-05 · 2026",
+				"ev_group_method_note": "C-03 · NOTA INTERNA"
 			}
 		"contradictory":
 			labels = {
-				"ev_defense_bernardo_2025": "Bernardo · sustentação oral",
-				"ev_outcome_bernardo_2025": "Bernardo · julgamento",
-				"ev_defense_marcio_2025": "Márcio · sustentação oral",
-				"ev_outcome_marcio_2025": "Márcio · julgamento",
-				"ev_pgr_argument_2025": "PGR · sustentação oral"
+				"ev_defense_bernardo_2025": "D-01 · BERNARDO · 11/11",
+				"ev_outcome_bernardo_2025": "D-02 · BERNARDO · 18/11",
+				"ev_defense_marcio_2025": "D-03 · MÁRCIO · 11/11",
+				"ev_outcome_marcio_2025": "D-04 · MÁRCIO · 18/11",
+				"ev_pgr_argument_2025": "B-03 · PGR · 11/11"
 			}
 	if labels.has(evidence_id):
 		return str(labels[evidence_id])
-	return _short_title(evidence_id, 54)
+	return "PEÇA · %s" % evidence_id.right(6).to_upper()
 
 func _short_title(evidence_id: String, limit := 58) -> String:
 	var item := EvidenceDB.get_evidence(evidence_id)
@@ -1045,7 +1143,7 @@ func _on_reconstruction_activated(step_index: int) -> void:
 		_show_toast("A reconstrução recusa o salto: falta a passagem anterior.")
 		return
 	GameState.reconstruction_step += 1
-	AudioManager.play_discovery()
+	AudioManager.play_projector()
 	if GameState.reconstruction_step >= 3:
 		GameState.reconstruction_complete = true
 		_show_toast("Reconstrução coerente. Agora classifique a autoridade das peças no quadro.")
