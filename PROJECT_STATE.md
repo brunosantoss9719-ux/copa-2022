@@ -6,7 +6,8 @@ Repo: brunosantoss9719-ux/copa-2022
 Branch: main
 Toolchain: Godot 4.7.2-stable / GDScript
 Targets validados: Windows x86_64 e Android arm64
-Commit de software/build validado: 032a7d943cf1fc1939b4ab391f0065acbdebef90
+Último commit de software/build validado: 032a7d943cf1fc1939b4ab391f0065acbdebef90
+Observação: commits posteriores em main podem ser apenas documentação com [skip ci]; não substituem o SHA de software/build acima.
 
 ## Estado implementado
 - quatro arquivos/alas, 16 evidências e cinco puzzles;
@@ -59,6 +60,11 @@ Android Release:
 - APK: 28.336.019 bytes
 - APK SHA-256: 177d3a11d1f3e36c336b42525b87921e7ef16ef9c0fffe97d56592138ce843b3
 - download direto: https://github.com/brunosantoss9719-ux/copa-2022/releases/download/android-0.4.1-032a7d9/Linha-de-Sombra-Copa-2022-Android-032a7d9.apk
+
+## Reconciliação canônica — 21/09/2026
+O GitHub já estava em 0.4.1 enquanto parte dos documentos 00/06/07/08 do Drive ainda descrevia 0.4.0.
+Nesta retomada, o handoff foi explicitado aqui e o Drive foi reconciliado para 0.4.1.
+Os documentos 09 e 10 já continham os dados corretos da 0.4.1.
 
 ## Limitação humana
 O APK ainda precisa de execução física no aparelho para validar ergonomia real, escala, safe areas, desempenho e áudio.
