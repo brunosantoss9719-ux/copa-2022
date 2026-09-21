@@ -9,8 +9,9 @@ var reconstruction_complete := false
 var status_solved := false
 var origin_solved := false
 var individualization_solved := false
+var contradictory_solved := false
 var slice_complete := false
-var hints_used := {"timeline": 0, "status": 0, "origin": 0, "individualization": 0}
+var hints_used := {"timeline": 0, "status": 0, "origin": 0, "individualization": 0, "contradictory": 0}
 
 func reset_state() -> void:
 	discovered_evidence.clear()
@@ -20,8 +21,9 @@ func reset_state() -> void:
 	status_solved = false
 	origin_solved = false
 	individualization_solved = false
+	contradictory_solved = false
 	slice_complete = false
-	hints_used = {"timeline": 0, "status": 0, "origin": 0, "individualization": 0}
+	hints_used = {"timeline": 0, "status": 0, "origin": 0, "individualization": 0, "contradictory": 0}
 
 func discover_evidence(evidence_id: String) -> bool:
 	if evidence_id in discovered_evidence:
@@ -48,6 +50,7 @@ func to_save_dict() -> Dictionary:
 		"status_solved": status_solved,
 		"origin_solved": origin_solved,
 		"individualization_solved": individualization_solved,
+		"contradictory_solved": contradictory_solved,
 		"slice_complete": slice_complete,
 		"hints_used": hints_used.duplicate(true)
 	}
@@ -64,11 +67,13 @@ func from_save_dict(data: Dictionary) -> bool:
 	status_solved = bool(data.get("status_solved", false))
 	origin_solved = bool(data.get("origin_solved", false))
 	individualization_solved = bool(data.get("individualization_solved", false))
-	slice_complete = bool(data.get("slice_complete", false)) and individualization_solved
+	contradictory_solved = bool(data.get("contradictory_solved", false))
+	slice_complete = bool(data.get("slice_complete", false)) and contradictory_solved
 	var loaded_hints = data.get("hints_used", {})
 	if loaded_hints is Dictionary:
 		hints_used["timeline"] = clampi(int(loaded_hints.get("timeline", 0)), 0, 3)
 		hints_used["status"] = clampi(int(loaded_hints.get("status", 0)), 0, 3)
 		hints_used["origin"] = clampi(int(loaded_hints.get("origin", 0)), 0, 3)
 		hints_used["individualization"] = clampi(int(loaded_hints.get("individualization", 0)), 0, 3)
+		hints_used["contradictory"] = clampi(int(loaded_hints.get("contradictory", 0)), 0, 3)
 	return true

@@ -42,6 +42,20 @@ const INDIVIDUALIZATION_PROMPTS := [
 	"Qual decisão posterior tem alcance individual e não pode ser usada como status do grupo inteiro?"
 ]
 
+const CONTRADICTORY_SOLUTION := [
+	"ev_defense_bernardo_2025",
+	"ev_outcome_bernardo_2025",
+	"ev_defense_marcio_2025",
+	"ev_outcome_marcio_2025"
+]
+
+const CONTRADICTORY_PROMPTS := [
+	"Bernardo — tese apresentada pela defesa",
+	"Bernardo — resultado judicial",
+	"Márcio — tese apresentada pela defesa",
+	"Márcio — resultado judicial"
+]
+
 const TIMELINE_HINTS := [
 	"Pergunta útil: qual peça descreve investigação, qual registra julgamento e qual só existe depois dele?",
 	"Compare a comunicação da PF, o resultado da AP 2696 e a decisão posterior sobre acordos.",
@@ -64,6 +78,12 @@ const INDIVIDUALIZATION_HINTS := [
 	"A pergunta agora não é sobre o grupo, mas sobre diferenças entre pessoas e etapas processuais.",
 	"Compare o recebimento da denúncia, o resultado do julgamento e a decisão posterior sobre ANPPs. A nota da analista orienta, mas não prova um resultado.",
 	"Duas acusações foram rejeitadas; nove de dez réus foram condenados e um absolvido; os ANPPs posteriores dizem respeito a dois indivíduos."
+]
+
+const CONTRADICTORY_HINTS := [
+	"Monte pares históricos. Primeiro: o que a defesa sustentou. Depois: o que o tribunal decidiu.",
+	"Não use a decisão para reescrever a tese defensiva, nem a tese defensiva para substituir o resultado judicial.",
+	"Bernardo: defesa pediu absolvição; o resultado registrou condenação. Márcio: defesa alegou participação limitada; o julgamento o condenou após reenquadramento para crimes menos graves."
 ]
 
 func timeline_ready() -> bool:
@@ -128,6 +148,22 @@ func validate_individualization(answer: Array) -> bool:
 			return false
 	return true
 
+func contradictory_ready() -> bool:
+	if not GameState.individualization_solved:
+		return false
+	for evidence_id in CONTRADICTORY_SOLUTION:
+		if not GameState.has_evidence(evidence_id):
+			return false
+	return true
+
+func validate_contradictory(answer: Array) -> bool:
+	if answer.size() != CONTRADICTORY_SOLUTION.size():
+		return false
+	for i in range(CONTRADICTORY_SOLUTION.size()):
+		if str(answer[i]) != CONTRADICTORY_SOLUTION[i]:
+			return false
+	return true
+
 func get_hint(puzzle_id: String, level: int) -> String:
 	var hints: Array
 	if puzzle_id == "timeline":
@@ -136,8 +172,10 @@ func get_hint(puzzle_id: String, level: int) -> String:
 		hints = STATUS_HINTS
 	elif puzzle_id == "origin":
 		hints = ORIGIN_HINTS
-	else:
+	elif puzzle_id == "individualization":
 		hints = INDIVIDUALIZATION_HINTS
+	else:
+		hints = CONTRADICTORY_HINTS
 	if hints.is_empty():
 		return ""
 	return str(hints[clampi(level - 1, 0, hints.size() - 1)])

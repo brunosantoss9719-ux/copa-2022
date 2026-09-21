@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 0.4.0 — contraditório
+- Novo Arquivo IV, liberado após a individualização.
+- Quatro novas evidências: duas teses de defesa e dois resultados judiciais pareados.
+- Claims LS-F011 a LS-F013 adicionados.
+- Puzzle 5 separa “o que a defesa sustentou” de “o que o tribunal decidiu”.
+- TESE_DE_DEFESA passa a entrar no caminho crítico pela primeira vez.
+- Save anterior permanece carregável; conclusão 0.3 não pula o Puzzle 5.
+- Mundo/câmera ampliados para a quarta ala.
+- Smoke e FlowProbe ampliados para 16 evidências e cinco puzzles.
+- CI/artifact serão registrados após validação.
+
+
 ## 0.3.0 — individualização
 - Novo Arquivo III, liberado somente após o rastro documental.
 - Três novos cartões na fase 3: duas decisões oficiais e uma nota ficcional de método.

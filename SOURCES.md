@@ -14,5 +14,8 @@ O Google Drive, documento **04 — FONTES E STATUS FÁTICO**, é o ledger canôn
 | LS-F008 | ALEGAÇÃO_OFICIAL | PGR registra sua sustentação oral de 11/11/2025 e o pedido de condenação, anterior ao resultado do julgamento. | https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/tentativa-de-golpe-gonet-pede-condenacao-de-militares-e-policial-federal-do-nucleo-3 |
 | LS-F009 | DECISÃO_JUDICIAL | Em 20/05/2025, a Primeira Turma recebeu a denúncia contra dez acusados e rejeitou as acusações contra outros dois militares. | https://noticias.stf.jus.br/postsnoticias/stf-aceita-denuncia-contra-dez-integrantes-do-nucleo-3-por-tentativa-de-golpe/ |
 | LS-F010 | DECISÃO_JUDICIAL | Em 18/11/2025, nove dos dez réus da AP 2696 foram condenados e um foi absolvido por insuficiência de provas. | https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/ |
+| LS-F011 | TESE_DE_DEFESA | A defesa de Bernardo pediu absolvição e sustentou fragilidade das provas e retirada de conversas de contexto. | https://noticias.stf.jus.br/postsnoticias/ap-2696-stf-ouve-argumentos-das-defesas-de-seis-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/ |
+| LS-F012 | TESE_DE_DEFESA | A defesa de Márcio sustentou participação limitada e comparou sua situação a acusações rejeitadas contra outros militares. | https://noticias.stf.jus.br/postsnoticias/ap-2696-stf-ouve-argumentos-das-defesas-de-seis-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/ |
+| LS-F013 | DECISÃO_JUDICIAL | O resultado final incluiu reenquadramento das condutas de Márcio e Ronald para crimes menos graves que os apontados na denúncia. | https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/ |
 
-Última verificação: 20/09/2026.
+Última verificação: 21/09/2026.

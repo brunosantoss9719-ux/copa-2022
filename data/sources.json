@@ -78,5 +78,29 @@
     "url": "https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/",
     "last_verified": "2026-09-20",
     "summary": "A Primeira Turma condenou nove dos dez réus e absolveu um por insuficiência de provas em 18/11/2025."
+  },
+  {
+    "id": "LS-F011",
+    "label": "STF — sustentação da defesa de Bernardo na AP 2696",
+    "status": "TESE_DE_DEFESA",
+    "url": "https://noticias.stf.jus.br/postsnoticias/ap-2696-stf-ouve-argumentos-das-defesas-de-seis-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/",
+    "last_verified": "2026-09-21",
+    "summary": "Fonte institucional que registra que a defesa de Bernardo pediu absolvição e sustentou fragilidade das provas e retirada de conversas de contexto."
+  },
+  {
+    "id": "LS-F012",
+    "label": "STF — sustentação da defesa de Márcio na AP 2696",
+    "status": "TESE_DE_DEFESA",
+    "url": "https://noticias.stf.jus.br/postsnoticias/ap-2696-stf-ouve-argumentos-das-defesas-de-seis-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/",
+    "last_verified": "2026-09-21",
+    "summary": "Fonte institucional que registra a tese defensiva de Márcio de participação limitada e comparação com acusações rejeitadas contra outros militares."
+  },
+  {
+    "id": "LS-F013",
+    "label": "STF — resultado com reenquadramento de condutas na AP 2696",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/",
+    "last_verified": "2026-09-21",
+    "summary": "Fonte institucional para o resultado final, incluindo a desclassificação de crimes imputados a Márcio Nunes de Resende Jr. e Ronald Ferreira de Araújo Jr."
   }
 ]

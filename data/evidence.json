@@ -118,5 +118,45 @@
     "fictionalization_note": "Nota integralmente ficcional. Pode orientar o método, mas não prova nenhum resultado judicial.",
     "world_x": 3620,
     "phase": 3
+  },
+  {
+    "id": "ev_defense_bernardo_2025",
+    "title": "11/11/2025 — tese da defesa de Bernardo",
+    "summary": "Em sustentação oral, a defesa pediu absolvição e argumentou que as provas eram frágeis e que trechos de conversas teriam sido retirados de contexto. Este cartão registra o que a defesa sustentou, não uma conclusão do tribunal.",
+    "source_id": "LS-F011",
+    "factual_status": "TESE_DE_DEFESA",
+    "fictionalization_note": "A ficha física é dramatização; o resumo preserva a atribuição expressa à defesa.",
+    "world_x": 3970,
+    "phase": 4
+  },
+  {
+    "id": "ev_outcome_bernardo_2025",
+    "title": "18/11/2025 — resultado de Bernardo",
+    "summary": "No resultado divulgado pelo STF, Bernardo Romão Corrêa Netto foi condenado. Esta peça registra o desfecho judicial e não apaga o fato de que a defesa havia pedido absolvição.",
+    "source_id": "LS-F002",
+    "factual_status": "DECISÃO_JUDICIAL",
+    "fictionalization_note": "O cartão resume apenas o resultado judicial indicado na fonte institucional.",
+    "world_x": 4210,
+    "phase": 4
+  },
+  {
+    "id": "ev_defense_marcio_2025",
+    "title": "11/11/2025 — tese da defesa de Márcio",
+    "summary": "A defesa de Márcio Nunes de Resende Jr. sustentou que sua implicação era limitada e comparou sua situação à de dois militares cujas acusações haviam sido rejeitadas. O cartão registra uma tese defensiva.",
+    "source_id": "LS-F012",
+    "factual_status": "TESE_DE_DEFESA",
+    "fictionalization_note": "A ficha é dramatização; a tese permanece atribuída ao advogado de defesa.",
+    "world_x": 4450,
+    "phase": 4
+  },
+  {
+    "id": "ev_outcome_marcio_2025",
+    "title": "18/11/2025 — resultado de Márcio",
+    "summary": "No julgamento, Márcio Nunes de Resende Jr. foi condenado por crimes menos graves do que os apontados na denúncia, após reenquadramento das condutas. É resultado judicial, não reprodução da tese defensiva.",
+    "source_id": "LS-F013",
+    "factual_status": "DECISÃO_JUDICIAL",
+    "fictionalization_note": "A ficha resume o resultado institucional divulgado pelo STF.",
+    "world_x": 4690,
+    "phase": 4
   }
 ]

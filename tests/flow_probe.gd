@@ -43,6 +43,7 @@ func _run() -> void:
 	var investigator: CharacterBody2D = main.get_node("Investigator") as CharacterBody2D
 	var phase_gate: Node = main.get_node("PhaseGate")
 	var individualization_gate: Node = main.get_node("IndividualizationGate")
+	var contradictory_gate: Node = main.get_node("ContradictoryGate")
 	investigator.position.x = 2760.0
 	await get_tree().physics_frame
 	await get_tree().process_frame
@@ -121,7 +122,7 @@ func _run() -> void:
 	_check(investigator.position.x > 2900.0, "Limite físico do Arquivo III não abriu")
 
 	_collect(main, ["ev_denuncia_filtered_2025", "ev_acquittal_2025", "ev_group_method_note"])
-	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências 0.3")
+	_check(GameState.discovered_evidence.size() == 12, "Arquivo III deveria encerrar com doze evidências antes do contraditório")
 	main.call("_refresh_board")
 	main.call("_open_board")
 	await get_tree().process_frame
@@ -137,9 +138,35 @@ func _run() -> void:
 	main.call("_validate_individualization")
 
 	_check(GameState.individualization_solved, "Individualização correta não avançou")
-	_check(GameState.slice_complete, "Slice 0.3 não terminou após o caminho correto")
+	_check(not GameState.slice_complete, "Slice terminou antes do contraditório")
+	_check(bool(contradictory_gate.call("is_unlocked")), "Marco visual do Arquivo IV não foi liberado")
+	var phase_banner_after_individualization: PanelContainer = main.get("phase_banner") as PanelContainer
+	_check(phase_banner_after_individualization != null and phase_banner_after_individualization.visible, "Transição ARQUIVO IV não foi exibida")
+	investigator.position.x = 4680.0
+	await get_tree().physics_frame
+	await get_tree().process_frame
+	_check(investigator.position.x > 3790.0, "Limite físico do Arquivo IV não abriu")
+
+	_collect(main, ["ev_defense_bernardo_2025", "ev_outcome_bernardo_2025", "ev_defense_marcio_2025", "ev_outcome_marcio_2025"])
+	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências 0.4")
+	main.call("_refresh_board")
+	main.call("_open_board")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_check(board_scroll.scroll_vertical > 0, "Quadro não focou o Puzzle 5")
+	main.call("_close_board")
+
+	var contradictory_options: Array = main.get("contradictory_options")
+	var contradictory_solution: Array[String] = ["ev_defense_bernardo_2025", "ev_outcome_bernardo_2025", "ev_defense_marcio_2025", "ev_outcome_marcio_2025"]
+	for index in range(contradictory_solution.size()):
+		var option: OptionButton = contradictory_options[index] as OptionButton
+		_check(option != null and _select_metadata(option, contradictory_solution[index]), "Falha ao montar contraditório")
+	main.call("_validate_contradictory")
+
+	_check(GameState.contradictory_solved, "Contraditório correto não avançou")
+	_check(GameState.slice_complete, "Slice 0.4 não terminou após o caminho correto")
 	var conclusion_panel: PanelContainer = main.get("conclusion_panel") as PanelContainer
-	_check(conclusion_panel != null and conclusion_panel.visible, "Relatório final 0.3 não foi exibido")
+	_check(conclusion_panel != null and conclusion_panel.visible, "Relatório final 0.4 não foi exibido")
 	_check(SaveManager.has_save(), "Fluxo completo não deixou save")
 
 	SaveManager.clear_save()
@@ -149,7 +176,7 @@ func _run() -> void:
 
 func _finish() -> void:
 	if failures.is_empty():
-		print("FLOW_OK: caminho 0.3 validado até individualização e relatório final.")
+		print("FLOW_OK: caminho 0.4 validado até contraditório e relatório final.")
 		get_tree().quit(0)
 		return
 	for failure in failures:

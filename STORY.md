@@ -39,3 +39,17 @@ Três novas peças entram no espaço:
 O Puzzle 4 apresenta generalizações e pede a peça oficial que as contradiz. A nota ficcional funciona como distração: pode orientar a leitura, mas não serve como prova de um resultado judicial.
 
 O fecho reforça que a situação de cada pessoa precisa ser lida por etapa processual, e que decisões posteriores aplicáveis a dois indivíduos não devem ser estendidas automaticamente ao grupo.
+
+## 0.4 — Contraditório
+
+Depois de individualizar resultados, a investigadora abre o **Arquivo IV**. O novo problema é separar três coisas que podem aparecer sobre a mesma pessoa: acusação, tese defensiva e decisão judicial.
+
+Quatro cartões formam dois pares:
+- defesa de Bernardo: pedido de absolvição e questionamento da força/contexto das provas;
+- resultado de Bernardo: condenação registrada no julgamento;
+- defesa de Márcio: tese de participação limitada e comparação com acusações anteriormente rejeitadas;
+- resultado de Márcio: condenação após reenquadramento para crimes menos graves do que os apontados na denúncia.
+
+O Puzzle 5 não pede ao jogador para decidir qual argumento “é melhor”. Ele pede uma reconstrução documental: **quem sustentou o quê e o que o tribunal decidiu depois**.
+
+A conclusão explicita que uma tese de defesa continua sendo uma tese de defesa mesmo quando o resultado judicial é diferente; da mesma forma, o resultado não autoriza apagar ou reescrever o conteúdo histórico da sustentação.

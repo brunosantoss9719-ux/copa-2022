@@ -3,7 +3,7 @@
 Thriller investigativo 2.5D em Godot sobre reconstrução documental de acontecimentos ligados aos nomes públicos “Copa 2022” e “Punhal Verde e Amarelo”.
 
 ## Estado
-Fatia vertical **0.3.0** em Godot 4.7.2-stable, GDScript, com Windows x86_64 como build de referência.
+Fatia vertical **0.4.0** em Godot 4.7.2-stable, GDScript, com Windows x86_64 como build de referência.
 
 ## Executar
 1. Instale Godot 4.7.2-stable.
@@ -14,7 +14,7 @@ Fatia vertical **0.3.0** em Godot 4.7.2-stable, GDScript, com Windows x86_64 com
 ## Loop demonstrado
 Explorar → observar → coletar → cruzar → reconstruir → formular hipótese → validar → atualizar o caso.
 
-O 0.2 acrescenta uma segunda ala investigativa com um puzzle de proveniência documental: investigação → recebimento da denúncia → julgamento. Na 0.2.1, a ala permanece fisicamente bloqueada até ser liberada. A 0.3 acrescenta o **Arquivo III — Individualização**, em que o jogador usa decisões oficiais para derrubar generalizações sobre resultados processuais individuais.
+O 0.2 acrescenta uma segunda ala investigativa com um puzzle de proveniência documental: investigação → recebimento da denúncia → julgamento. Na 0.2.1, a ala permanece fisicamente bloqueada até ser liberada. A 0.3 acrescenta o **Arquivo III — Individualização**, em que o jogador usa decisões oficiais para derrubar generalizações sobre resultados processuais individuais. A 0.4 acrescenta o **Arquivo IV — Contraditório**, que obriga a parear teses de defesa com os resultados judiciais posteriores sem tratar uma categoria como substituta da outra.
 
 ## Princípios
 - personagem jogável fictícia/composta da Polícia Federal;
