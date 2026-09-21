@@ -21,6 +21,10 @@ func _ready() -> void:
 	_tones["success"] = _make_tone(0.34, 180.0, 0.18)
 	_tones["fail"] = _make_tone(0.18, 120.0, 0.12)
 	_tones["step"] = _make_tone(0.07, 85.0, 0.08)
+	_tones["paper"] = _make_noise(0.12, 0.09, 0.82)
+	_tones["pin"] = _make_tone(0.07, 520.0, 0.11)
+	_tones["stamp"] = _make_noise(0.10, 0.14, 0.30)
+	_tones["projector"] = _make_tone(0.16, 155.0, 0.14)
 
 func play_ambience() -> void:
 	if ambience_player.stream != null and not ambience_player.playing:
@@ -40,6 +44,18 @@ func play_fail() -> void:
 
 func play_step() -> void:
 	_play_tone("step", -8.0)
+
+func play_paper() -> void:
+	_play_tone("paper", -3.0)
+
+func play_pin() -> void:
+	_play_tone("pin", -2.0)
+
+func play_stamp() -> void:
+	_play_tone("stamp", 1.0)
+
+func play_projector() -> void:
+	_play_tone("projector", -1.0)
 
 func _play_tone(kind: String, extra_db := 0.0) -> void:
 	if not _tones.has(kind):
@@ -72,6 +88,19 @@ func _make_tone(seconds: float, frequency: float, amplitude: float) -> AudioStre
 		var t: float = float(i) / float(MIX_RATE)
 		var envelope: float = 1.0 - (float(i) / float(sample_count))
 		samples[i] = (sin(TAU * frequency * t) + sin(TAU * frequency * 0.5 * t) * 0.35) * amplitude * envelope
+	return _samples_to_wav(samples)
+
+func _make_noise(seconds: float, amplitude: float, brightness: float) -> AudioStreamWAV:
+	var sample_count: int = maxi(1, int(seconds * MIX_RATE))
+	var samples := PackedFloat32Array()
+	samples.resize(sample_count)
+	var previous := 0.0
+	for i in range(sample_count):
+		var envelope: float = 1.0 - (float(i) / float(sample_count))
+		var raw: float = sin(float(i) * 12.9898) * sin(float(i) * 78.233)
+		var filtered: float = lerpf(previous, raw, clampf(brightness, 0.05, 1.0))
+		previous = filtered
+		samples[i] = filtered * amplitude * envelope
 	return _samples_to_wav(samples)
 
 func _samples_to_wav(samples: PackedFloat32Array) -> AudioStreamWAV:
