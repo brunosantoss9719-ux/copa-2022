@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 0.3.0 — individualização
+- Novo Arquivo III, liberado somente após o rastro documental.
+- Três novos cartões na fase 3: duas decisões oficiais e uma nota ficcional de método.
+- Claims LS-F009 e LS-F010 adicionados ao ledger/software.
+- Puzzle 4 pede evidências que contradizem generalizações sobre recebimento da denúncia, condenação e tratamento posterior.
+- A nota ficcional não pode ser aceita como prova judicial.
+- Save anterior permanece carregável; builds 0.2 não são consideradas concluídas até o novo Puzzle 4.
+- Mundo/câmera ampliados para a terceira ala.
+- FlowProbe ampliado para o caminho completo 0.3.
+- CI/artifact serão registrados após validação.
+
+
 ## 0.2.1 — polimento da segunda ala
 - Ala II agora fica fisicamente inacessível até a conclusão do Puzzle 2.
 - Marco visual procedural “ARQUIVO II” mostra acesso pendente/liberado.

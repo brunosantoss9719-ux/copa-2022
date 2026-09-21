@@ -2,7 +2,8 @@ extends CharacterBody2D
 
 const SPEED := 245.0
 const PHASE1_RIGHT := 2050.0
-const WORLD_RIGHT := 2860.0
+const PHASE2_RIGHT := 2900.0
+const WORLD_RIGHT := 3710.0
 
 var controls_enabled := true
 var _step_clock := 0.0
@@ -28,7 +29,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		_step_clock = 0.0
 	velocity.x = direction * SPEED
-	var right_limit := WORLD_RIGHT if GameState.status_solved else PHASE1_RIGHT
+	var right_limit := PHASE1_RIGHT
+	if GameState.origin_solved:
+		right_limit = WORLD_RIGHT
+	elif GameState.status_solved:
+		right_limit = PHASE2_RIGHT
 	position.x = clampf(position.x + velocity.x * delta, 90.0, right_limit)
 	position.y = 552.0
 	queue_redraw()

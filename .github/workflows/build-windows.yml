@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linha-de-sombra-0.2.1-${{ steps.export.outputs.short_sha }}
+          name: linha-de-sombra-0.3.0-${{ steps.export.outputs.short_sha }}
           path: dist/*
           if-no-files-found: error
           retention-days: 14

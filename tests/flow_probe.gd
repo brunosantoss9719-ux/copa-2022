@@ -42,6 +42,7 @@ func _run() -> void:
 	_check(not get_tree().paused, "Novo jogo não liberou a cena")
 	var investigator: CharacterBody2D = main.get_node("Investigator") as CharacterBody2D
 	var phase_gate: Node = main.get_node("PhaseGate")
+	var individualization_gate: Node = main.get_node("IndividualizationGate")
 	investigator.position.x = 2760.0
 	await get_tree().physics_frame
 	await get_tree().process_frame
@@ -110,9 +111,35 @@ func _run() -> void:
 	main.call("_validate_origin")
 
 	_check(GameState.origin_solved, "Rastro documental correto não avançou")
-	_check(GameState.slice_complete, "Slice 0.2 não terminou após o caminho correto")
+	_check(not GameState.slice_complete, "Slice terminou antes da individualização")
+	_check(bool(individualization_gate.call("is_unlocked")), "Marco visual do Arquivo III não foi liberado")
+	var phase_banner_after_origin: PanelContainer = main.get("phase_banner") as PanelContainer
+	_check(phase_banner_after_origin != null and phase_banner_after_origin.visible, "Transição ARQUIVO III não foi exibida")
+	investigator.position.x = 3600.0
+	await get_tree().physics_frame
+	await get_tree().process_frame
+	_check(investigator.position.x > 2900.0, "Limite físico do Arquivo III não abriu")
+
+	_collect(main, ["ev_denuncia_filtered_2025", "ev_acquittal_2025", "ev_group_method_note"])
+	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências 0.3")
+	main.call("_refresh_board")
+	main.call("_open_board")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_check(board_scroll.scroll_vertical > 0, "Quadro não focou o Puzzle 4")
+	main.call("_close_board")
+
+	var individualization_options: Array = main.get("individualization_options")
+	var individualization_solution: Array[String] = ["ev_denuncia_filtered_2025", "ev_acquittal_2025", "ev_anpp_2026"]
+	for index in range(individualization_solution.size()):
+		var option: OptionButton = individualization_options[index] as OptionButton
+		_check(option != null and _select_metadata(option, individualization_solution[index]), "Falha ao montar individualização")
+	main.call("_validate_individualization")
+
+	_check(GameState.individualization_solved, "Individualização correta não avançou")
+	_check(GameState.slice_complete, "Slice 0.3 não terminou após o caminho correto")
 	var conclusion_panel: PanelContainer = main.get("conclusion_panel") as PanelContainer
-	_check(conclusion_panel != null and conclusion_panel.visible, "Relatório final 0.2 não foi exibido")
+	_check(conclusion_panel != null and conclusion_panel.visible, "Relatório final 0.3 não foi exibido")
 	_check(SaveManager.has_save(), "Fluxo completo não deixou save")
 
 	SaveManager.clear_save()
@@ -122,7 +149,7 @@ func _run() -> void:
 
 func _finish() -> void:
 	if failures.is_empty():
-		print("FLOW_OK: caminho 0.2 validado até o rastro documental e relatório final.")
+		print("FLOW_OK: caminho 0.3 validado até individualização e relatório final.")
 		get_tree().quit(0)
 		return
 	for failure in failures:

@@ -1,10 +1,82 @@
 [
-  {"id":"LS-F001","label":"STF — voto do relator na AP 2696","status":"DECISÃO_JUDICIAL","url":"https://noticias.stf.jus.br/postsnoticias/ap-2696-relator-vota-para-condenar-nove-reus-do-nucleo-3-da-tentativa-de-golpe/","last_verified":"2026-09-20","summary":"Fonte institucional para a denominação Copa 2022 e conclusões atribuídas ao voto do relator."},
-  {"id":"LS-F002","label":"STF — resultado do julgamento do Núcleo 3","status":"DECISÃO_JUDICIAL","url":"https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/","last_verified":"2026-09-20","summary":"Fonte institucional para o resultado da AP 2696: nove condenações e uma absolvição por insuficiência de provas."},
-  {"id":"LS-F003","label":"STF — ANPPs homologados no Núcleo 3","status":"DECISÃO_JUDICIAL","url":"https://noticias.stf.jus.br/postsnoticias/stf-homologa-acordo-entre-pgr-e-dois-militares-do-nucleo-3-da-tentativa-de-golpe/","last_verified":"2026-09-20","summary":"Fonte institucional para a situação posterior de dois militares em ANPP."},
-  {"id":"LS-F004","label":"Agência Gov via MJSP — Operação Contragolpe","status":"ALEGAÇÃO_OFICIAL","url":"https://agenciagov.ebc.com.br/noticias/202411/policia-federal-desarticula-organizacao-criminosa-que-planejou-golpe-de-estado-1","last_verified":"2026-09-20","summary":"Comunicação oficial sobre a investigação da PF em 19/11/2024."},
-  {"id":"LS-F005","label":"Criação original do projeto","status":"FICÇÃO_DRAMÁTICA","url":"","last_verified":"2026-09-20","summary":"Investigadora, sala, rascunho e estações da reconstrução são encenação fictícia."},
-  {"id":"LS-F006","label":"STF — Pet 13236, decisão tornada pública","status":"ALEGAÇÃO_OFICIAL","url":"https://noticias.stf.jus.br/postsnoticias/stf-determina-prisao-de-suspeitos-por-planejamento-de-golpe-contra-a-democracia/","last_verified":"2026-09-20","summary":"A notícia da decisão registra que, segundo a PF, a operação era denominada pelos investigados de ‘Copa 2022’; o conteúdo investigativo permanece atribuído à PF."},
-  {"id":"LS-F007","label":"PGR — recebimento da denúncia do Núcleo 3","status":"DECISÃO_JUDICIAL","url":"https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/supremo-aceita-denuncia-contra-10-pessoas-acusadas-de-integrar-o-nucleo-militar-da-tentativa-de-golpe-de-estado","last_verified":"2026-09-20","summary":"Fonte institucional que registra o recebimento da denúncia em 20/05/2025 e o início da ação penal, sem equivaler a condenação."},
-  {"id":"LS-F008","label":"PGR — sustentação oral no julgamento do Núcleo 3","status":"ALEGAÇÃO_OFICIAL","url":"https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/tentativa-de-golpe-gonet-pede-condenacao-de-militares-e-policial-federal-do-nucleo-3","last_verified":"2026-09-20","summary":"Fonte institucional para a posição acusatória sustentada pela PGR em 11/11/2025, anterior ao resultado do julgamento."}
+  {
+    "id": "LS-F001",
+    "label": "STF — voto do relator na AP 2696",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/ap-2696-relator-vota-para-condenar-nove-reus-do-nucleo-3-da-tentativa-de-golpe/",
+    "last_verified": "2026-09-20",
+    "summary": "Fonte institucional para a denominação Copa 2022 e conclusões atribuídas ao voto do relator."
+  },
+  {
+    "id": "LS-F002",
+    "label": "STF — resultado do julgamento do Núcleo 3",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/",
+    "last_verified": "2026-09-20",
+    "summary": "Fonte institucional para o resultado da AP 2696: nove condenações e uma absolvição por insuficiência de provas."
+  },
+  {
+    "id": "LS-F003",
+    "label": "STF — ANPPs homologados no Núcleo 3",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/stf-homologa-acordo-entre-pgr-e-dois-militares-do-nucleo-3-da-tentativa-de-golpe/",
+    "last_verified": "2026-09-20",
+    "summary": "Fonte institucional para a situação posterior de dois militares em ANPP."
+  },
+  {
+    "id": "LS-F004",
+    "label": "Agência Gov via MJSP — Operação Contragolpe",
+    "status": "ALEGAÇÃO_OFICIAL",
+    "url": "https://agenciagov.ebc.com.br/noticias/202411/policia-federal-desarticula-organizacao-criminosa-que-planejou-golpe-de-estado-1",
+    "last_verified": "2026-09-20",
+    "summary": "Comunicação oficial sobre a investigação da PF em 19/11/2024."
+  },
+  {
+    "id": "LS-F005",
+    "label": "Criação original do projeto",
+    "status": "FICÇÃO_DRAMÁTICA",
+    "url": "",
+    "last_verified": "2026-09-20",
+    "summary": "Investigadora, sala, rascunho e estações da reconstrução são encenação fictícia."
+  },
+  {
+    "id": "LS-F006",
+    "label": "STF — Pet 13236, decisão tornada pública",
+    "status": "ALEGAÇÃO_OFICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/stf-determina-prisao-de-suspeitos-por-planejamento-de-golpe-contra-a-democracia/",
+    "last_verified": "2026-09-20",
+    "summary": "A notícia da decisão registra que, segundo a PF, a operação era denominada pelos investigados de ‘Copa 2022’; o conteúdo investigativo permanece atribuído à PF."
+  },
+  {
+    "id": "LS-F007",
+    "label": "PGR — recebimento da denúncia do Núcleo 3",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/supremo-aceita-denuncia-contra-10-pessoas-acusadas-de-integrar-o-nucleo-militar-da-tentativa-de-golpe-de-estado",
+    "last_verified": "2026-09-20",
+    "summary": "Fonte institucional que registra o recebimento da denúncia em 20/05/2025 e o início da ação penal, sem equivaler a condenação."
+  },
+  {
+    "id": "LS-F008",
+    "label": "PGR — sustentação oral no julgamento do Núcleo 3",
+    "status": "ALEGAÇÃO_OFICIAL",
+    "url": "https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/tentativa-de-golpe-gonet-pede-condenacao-de-militares-e-policial-federal-do-nucleo-3",
+    "last_verified": "2026-09-20",
+    "summary": "Fonte institucional para a posição acusatória sustentada pela PGR em 11/11/2025, anterior ao resultado do julgamento."
+  },
+  {
+    "id": "LS-F009",
+    "label": "STF — recebimento parcial da denúncia do Núcleo 3",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/stf-aceita-denuncia-contra-dez-integrantes-do-nucleo-3-por-tentativa-de-golpe/",
+    "last_verified": "2026-09-20",
+    "summary": "A Primeira Turma aceitou a denúncia contra dez acusados e rejeitou as acusações contra outros dois militares em 20/05/2025."
+  },
+  {
+    "id": "LS-F010",
+    "label": "STF — resultado individualizado da AP 2696",
+    "status": "DECISÃO_JUDICIAL",
+    "url": "https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/",
+    "last_verified": "2026-09-20",
+    "summary": "A Primeira Turma condenou nove dos dez réus e absolveu um por insuficiência de provas em 18/11/2025."
+  }
 ]

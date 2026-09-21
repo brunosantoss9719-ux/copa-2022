@@ -30,6 +30,18 @@ const ORIGIN_PROMPTS := [
 	"Qual peça registra o resultado do julgamento?"
 ]
 
+const INDIVIDUALIZATION_SOLUTION := [
+	"ev_denuncia_filtered_2025",
+	"ev_acquittal_2025",
+	"ev_anpp_2026"
+]
+
+const INDIVIDUALIZATION_PROMPTS := [
+	"Generalização: ‘todas as acusações avaliadas nessa etapa foram recebidas’. Qual peça a contradiz?",
+	"Generalização: ‘todos os dez réus foram condenados’. Qual peça a contradiz?",
+	"Qual decisão posterior tem alcance individual e não pode ser usada como status do grupo inteiro?"
+]
+
 const TIMELINE_HINTS := [
 	"Pergunta útil: qual peça descreve investigação, qual registra julgamento e qual só existe depois dele?",
 	"Compare a comunicação da PF, o resultado da AP 2696 e a decisão posterior sobre acordos.",
@@ -46,6 +58,12 @@ const ORIGIN_HINTS := [
 	"Não procure o primeiro uso absoluto do nome. Reconstrua apenas o rastro deste conjunto de fontes.",
 	"A peça de maio de 2025 diz que o recebimento da denúncia inicia a ação penal; isso não é condenação.",
 	"Diferencie a sustentação da PGR, que continua sendo posição da acusação, do resultado do julgamento registrado pelo STF."
+]
+
+const INDIVIDUALIZATION_HINTS := [
+	"A pergunta agora não é sobre o grupo, mas sobre diferenças entre pessoas e etapas processuais.",
+	"Compare o recebimento da denúncia, o resultado do julgamento e a decisão posterior sobre ANPPs. A nota da analista orienta, mas não prova um resultado.",
+	"Duas acusações foram rejeitadas; nove de dez réus foram condenados e um absolvido; os ANPPs posteriores dizem respeito a dois indivíduos."
 ]
 
 func timeline_ready() -> bool:
@@ -94,14 +112,32 @@ func validate_origin(answer: Array) -> bool:
 			return false
 	return true
 
+func individualization_ready() -> bool:
+	if not GameState.origin_solved:
+		return false
+	for evidence_id in ["ev_denuncia_filtered_2025", "ev_acquittal_2025", "ev_anpp_2026"]:
+		if not GameState.has_evidence(evidence_id):
+			return false
+	return true
+
+func validate_individualization(answer: Array) -> bool:
+	if answer.size() != INDIVIDUALIZATION_SOLUTION.size():
+		return false
+	for i in range(INDIVIDUALIZATION_SOLUTION.size()):
+		if str(answer[i]) != INDIVIDUALIZATION_SOLUTION[i]:
+			return false
+	return true
+
 func get_hint(puzzle_id: String, level: int) -> String:
 	var hints: Array
 	if puzzle_id == "timeline":
 		hints = TIMELINE_HINTS
 	elif puzzle_id == "status":
 		hints = STATUS_HINTS
-	else:
+	elif puzzle_id == "origin":
 		hints = ORIGIN_HINTS
+	else:
+		hints = INDIVIDUALIZATION_HINTS
 	if hints.is_empty():
 		return ""
 	return str(hints[clampi(level - 1, 0, hints.size() - 1)])

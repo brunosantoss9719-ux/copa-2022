@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/environment_layer.gd" id="2_env"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="3_player"]
 [ext_resource type="Script" path="res://scripts/phase_gate.gd" id="4_gate"]
+[ext_resource type="Script" path="res://scripts/individualization_gate.gd" id="5_gate3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(30, 86)
@@ -52,6 +53,29 @@ text = "ACESSO PENDENTE"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 16
 
+[node name="IndividualizationGate" type="Node2D" parent="."]
+position = Vector2(2960, 0)
+z_index = 4
+script = ExtResource("5_gate3")
+
+[node name="Title" type="Label" parent="IndividualizationGate"]
+offset_left = -132.0
+offset_top = 346.0
+offset_right = 132.0
+offset_bottom = 380.0
+text = "ARQUIVO III"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="State" type="Label" parent="IndividualizationGate"]
+offset_left = -132.0
+offset_top = 382.0
+offset_right = 132.0
+offset_bottom = 414.0
+text = "ACESSO PENDENTE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+
 [node name="Hotspots" type="Node2D" parent="."]
 
 [node name="Reconstruction" type="Node2D" parent="."]
@@ -72,7 +96,7 @@ position_smoothing_enabled = true
 position_smoothing_speed = 5.0
 limit_left = 0
 limit_top = 0
-limit_right = 2960
+limit_right = 3820
 limit_bottom = 720
 
 [node name="UI" type="CanvasLayer" parent="."]

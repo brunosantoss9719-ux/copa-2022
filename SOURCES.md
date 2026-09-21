@@ -12,5 +12,7 @@ O Google Drive, documento **04 — FONTES E STATUS FÁTICO**, é o ledger canôn
 | LS-F006 | ALEGAÇÃO_OFICIAL | Decisão tornada pública pelo STF registra que, segundo a PF, a operação era denominada pelos investigados de “Copa 2022”. | https://noticias.stf.jus.br/postsnoticias/stf-determina-prisao-de-suspeitos-por-planejamento-de-golpe-contra-a-democracia/ |
 | LS-F007 | DECISÃO_JUDICIAL | PGR registra o recebimento da denúncia do Núcleo 3 em 20/05/2025 e o início da ação penal. | https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/supremo-aceita-denuncia-contra-10-pessoas-acusadas-de-integrar-o-nucleo-militar-da-tentativa-de-golpe-de-estado |
 | LS-F008 | ALEGAÇÃO_OFICIAL | PGR registra sua sustentação oral de 11/11/2025 e o pedido de condenação, anterior ao resultado do julgamento. | https://www.mpf.mp.br/o-mpf/unidades/procuradoria-geral-da-republica-pgr/noticias/tentativa-de-golpe-gonet-pede-condenacao-de-militares-e-policial-federal-do-nucleo-3 |
+| LS-F009 | DECISÃO_JUDICIAL | Em 20/05/2025, a Primeira Turma recebeu a denúncia contra dez acusados e rejeitou as acusações contra outros dois militares. | https://noticias.stf.jus.br/postsnoticias/stf-aceita-denuncia-contra-dez-integrantes-do-nucleo-3-por-tentativa-de-golpe/ |
+| LS-F010 | DECISÃO_JUDICIAL | Em 18/11/2025, nove dos dez réus da AP 2696 foram condenados e um foi absolvido por insuficiência de provas. | https://noticias.stf.jus.br/postsnoticias/stf-condena-nove-reus-do-nucleo-3-da-tentativa-de-golpe-de-estado/ |
 
 Última verificação: 20/09/2026.
