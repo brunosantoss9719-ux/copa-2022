@@ -33,12 +33,12 @@ func _run() -> void:
 	var left: Button = main.get("mobile_left_button") as Button
 	var right: Button = main.get("mobile_right_button") as Button
 	var interact: Button = main.get("mobile_interact_button") as Button
-	var board: Button = main.get("mobile_board_button") as Button
+	var board: Button = main.get("mobile_board_button") as Button\n\tvar tray: VBoxContainer = main.get("board_tray") as VBoxContainer
 
 	_check(controls != null, "Controles mobile não foram criados")
 	_check(left != null and right != null, "Botões de movimento mobile ausentes")
 	_check(interact != null, "Botão Examinar mobile ausente")
-	_check(board != null, "Botão Quadro mobile ausente")
+	_check(board != null, "Botão Hipótese mobile ausente")
 
 	if left != null:
 		left.button_down.emit()
@@ -71,7 +71,7 @@ func _run() -> void:
 		board.pressed.emit()
 		await get_tree().process_frame
 		var board_panel: PanelContainer = main.get("board_panel") as PanelContainer
-		_check(board_panel != null and board_panel.visible, "Botão Quadro touch não abriu o quadro")
+		_check(board_panel != null and board_panel.visible, "Botão Hipótese touch não abriu o quadro")\n\t\t_check(str(main.get("board_stage")) == "timeline", "Quadro mobile não abriu na pergunta ativa")\n\t\t_check(tray != null and tray.get_child_count() >= 2, "Bandeja mobile não exibiu evidência descoberta")
 		main.call("_close_board")
 
 	_check(controls == null or controls.visible, "Controles mobile não retornaram após fechar modal")
