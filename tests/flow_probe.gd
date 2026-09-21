@@ -42,7 +42,7 @@ func _run() -> void:
 
 	main.call("_new_game")
 	_check(not get_tree().paused, "Novo jogo não liberou a cena")
-	_check(str(main.get("board_stage")) == "", "Quadro começou em estado inesperado")
+	_check(str(main.get("board_stage")) == "timeline", "Pergunta ativa inicial deveria ser a sequência")
 
 	var investigator: CharacterBody2D = main.get_node("Investigator") as CharacterBody2D
 	var phase_gate: Node = main.get_node("PhaseGate")
