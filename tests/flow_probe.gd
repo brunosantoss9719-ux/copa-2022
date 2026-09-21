@@ -100,7 +100,7 @@ func _run() -> void:
 	main.call("_close_board")
 
 	_collect(main, ["ev_pet13236_2024", "ev_denuncia_received_2025", "ev_pgr_argument_2025"])
-	_check(GameState.discovered_evidence.size() == EvidenceDB.evidence_count(), "Fluxo não coletou todas as evidências 0.2")
+	_check(GameState.discovered_evidence.size() == 9, "Segunda ala deveria encerrar com nove evidências antes do Arquivo III")
 	main.call("_refresh_board")
 
 	var origin_options: Array = main.get("origin_options")
