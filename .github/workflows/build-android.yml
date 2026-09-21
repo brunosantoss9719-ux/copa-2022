@@ -96,7 +96,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: linha-de-sombra-android-0.4.1-${{ steps.export.outputs.short_sha }}
+          name: linha-de-sombra-android-0.5.0-${{ steps.export.outputs.short_sha }}
           path: dist/*.apk
           if-no-files-found: error
           retention-days: 14
@@ -106,10 +106,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           SHORT_SHA="${{ steps.export.outputs.short_sha }}"
-          TAG="android-0.4.1-$SHORT_SHA"
+          TAG="android-0.5.0-$SHORT_SHA"
           APK="dist/Linha-de-Sombra-Copa-2022-Android-$SHORT_SHA.apk"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$APK" --clobber
           else
-            gh release create "$TAG" "$APK"               --target "$GITHUB_SHA"               --title "Linha de Sombra Android 0.4.1 ($SHORT_SHA)"               --notes "APK Android arm64 de playtest. Build automatizada, Smoke + FlowProbe + MobileTouchProbe + apksigner."
+            gh release create "$TAG" "$APK"               --target "$GITHUB_SHA"               --title "Linha de Sombra Android 0.5.0 ($SHORT_SHA)"               --notes "APK Android arm64 de playtest. Build automatizada, Smoke + FlowProbe + MobileTouchProbe + apksigner."
           fi

@@ -22,17 +22,29 @@ func _sync_state(force: bool) -> void:
 	if not force and next_state == _unlocked:
 		return
 	_unlocked = next_state
-	state_label.text = "ACESSO LIBERADO  →" if _unlocked else "ACESSO PENDENTE"
-	state_label.modulate = Color("#8dd8c9") if _unlocked else Color("#d0a36a")
-	title_label.modulate = Color("#d6eeee") if _unlocked else Color("#94a3a8")
+	state_label.text = "LIBERADO  →" if _unlocked else "ISOLADO"
+	state_label.modulate = Color("#8dd8c9") if _unlocked else Color("#b99668")
+	title_label.modulate = Color("#d6eeee") if _unlocked else Color("#8f9ca0")
 	queue_redraw()
 
 func _draw() -> void:
-	var frame_color := Color(0.30, 0.57, 0.61, 0.72) if _unlocked else Color(0.52, 0.38, 0.24, 0.80)
-	draw_rect(Rect2(-34, 250, 10, 310), frame_color, true)
-	draw_rect(Rect2(24, 250, 10, 310), frame_color, true)
-	draw_rect(Rect2(-34, 250, 68, 8), frame_color, true)
+	var frame_color := Color(0.32, 0.60, 0.60, 0.72) if _unlocked else Color(0.42, 0.36, 0.28, 0.70)
+	var glass := Color(0.16, 0.31, 0.34, 0.13) if _unlocked else Color(0.16, 0.12, 0.10, 0.34)
+
+	# Portal de controle de acesso mais discreto: faz parte da arquitetura,
+	# não parece uma "fase de videogame" plantada no corredor.
+	draw_rect(Rect2(-45, 228, 12, 332), Color("#17252c"), true)
+	draw_rect(Rect2(33, 228, 12, 332), Color("#17252c"), true)
+	draw_rect(Rect2(-45, 228, 90, 10), Color("#22343b"), true)
+	draw_rect(Rect2(-32, 244, 64, 316), glass, true)
+	draw_line(Vector2(-32, 244), Vector2(-32, 560), frame_color, 2.0)
+	draw_line(Vector2(32, 244), Vector2(32, 560), frame_color, 2.0)
+
+	# Leitor de acesso.
+	draw_rect(Rect2(47, 366, 18, 34), Color("#101a20"), true)
+	draw_circle(Vector2(56, 375), 3.5, Color("#78c9b4") if _unlocked else Color("#c09061"))
+	draw_line(Vector2(51, 388), Vector2(61, 388), frame_color, 1.5)
+
 	if not _unlocked:
-		draw_rect(Rect2(-23, 266, 46, 294), Color(0.24, 0.16, 0.11, 0.48), true)
-		for y in range(282, 548, 34):
-			draw_line(Vector2(-22, y), Vector2(22, y - 22), Color(0.73, 0.51, 0.27, 0.52), 3.0)
+		for y in range(276, 544, 30):
+			draw_line(Vector2(-27, y), Vector2(27, y - 18), Color(0.61, 0.44, 0.28, 0.34), 2.0)
