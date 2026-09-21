@@ -338,7 +338,7 @@ func _build_evidence_panel() -> void:
 	evidence_summary.custom_minimum_size = Vector2(0, 150)
 	box.add_child(evidence_summary)
 
-	evidence_source = _make_label("", 14, true, Color("#91aaaD"))
+	evidence_source = _make_label("", 14, true, Color("#91aaad"))
 	box.add_child(evidence_source)
 	evidence_note = _make_label("", 13, true, Color("#87989d"))
 	box.add_child(evidence_note)
@@ -714,9 +714,9 @@ func _refresh_board() -> void:
 	board_question_label.text = _stage_question(board_stage)
 	board_instruction_label.text = _stage_instruction(board_stage)
 
-	board_validate_button.visible = board_stage not in ["reconstruction", "complete"]
-	board_reset_button.visible = board_stage not in ["reconstruction", "complete"]
-	board_hint_button.visible = board_stage not in ["reconstruction", "complete"]
+	board_validate_button.visible = not (board_stage in ["reconstruction", "complete"])
+	board_reset_button.visible = not (board_stage in ["reconstruction", "complete"])
+	board_hint_button.visible = not (board_stage in ["reconstruction", "complete"])
 
 	if board_stage == "status":
 		_build_status_board()
@@ -803,7 +803,7 @@ func _select_board_evidence(evidence_id: String) -> void:
 	_refresh_board()
 
 func _place_selected_in_slot(index: int) -> void:
-	if board_stage not in ["timeline", "origin", "individualization", "contradictory"]:
+	if not (board_stage in ["timeline", "origin", "individualization", "contradictory"]):
 		return
 	var answer := _get_sequence_answer(board_stage)
 	if index < 0 or index >= answer.size():
