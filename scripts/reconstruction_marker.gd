@@ -37,9 +37,13 @@ func _on_body_exited(body) -> void:
 	focus_changed.emit(self, false)
 	queue_redraw()
 
+func activate_from_touch() -> void:
+	if _inside:
+		activated.emit(step_index)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if _inside and event.is_action_pressed("interact"):
-		activated.emit(step_index)
+		activate_from_touch()
 		get_viewport().set_input_as_handled()
 
 func _process(_delta: float) -> void:

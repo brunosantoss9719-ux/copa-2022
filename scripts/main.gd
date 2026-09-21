@@ -46,6 +46,8 @@ var conclusion_panel: PanelContainer
 var conclusion_text: Label
 var phase_banner: PanelContainer
 var phase_banner_label: Label
+var mobile_controls: Control
+var mobile_interact_button: Button
 var current_focus = null
 
 func _enter_tree() -> void:
@@ -150,6 +152,7 @@ func _build_ui() -> void:
 	_build_evidence_panel()
 	_build_board_panel()
 	_build_conclusion_panel()
+	_build_mobile_controls()
 
 func _make_panel(position_value: Vector2, size_value: Vector2, color: Color) -> PanelContainer:
 	var panel := PanelContainer.new()
@@ -400,6 +403,49 @@ func _build_conclusion_panel() -> void:
 	box.add_child(conclusion_text)
 	box.add_child(_make_button("Voltar à sala", _close_conclusion))
 
+func _make_mobile_button(text_value: String, position_value: Vector2, size_value: Vector2) -> Button:
+	var button := Button.new()
+	button.text = text_value
+	button.position = position_value
+	button.size = size_value
+	button.process_mode = Node.PROCESS_MODE_ALWAYS
+	button.add_theme_font_size_override("font_size", 24)
+	return button
+
+func _build_mobile_controls() -> void:
+	if not OS.has_feature("mobile"):
+		return
+	prompt_label.visible = false
+	mobile_controls = Control.new()
+	mobile_controls.position = Vector2.ZERO
+	mobile_controls.size = Vector2(1280, 720)
+	mobile_controls.process_mode = Node.PROCESS_MODE_ALWAYS
+	ui_root.add_child(mobile_controls)
+
+	var left_button := _make_mobile_button("◀", Vector2(26, 596), Vector2(108, 96))
+	var right_button := _make_mobile_button("▶", Vector2(146, 596), Vector2(108, 96))
+	mobile_controls.add_child(left_button)
+	mobile_controls.add_child(right_button)
+	left_button.button_down.connect(func(): Input.action_press("move_left"))
+	left_button.button_up.connect(func(): Input.action_release("move_left"))
+	right_button.button_down.connect(func(): Input.action_press("move_right"))
+	right_button.button_up.connect(func(): Input.action_release("move_right"))
+
+	mobile_interact_button = _make_mobile_button("Examinar", Vector2(1066, 596), Vector2(188, 96))
+	mobile_interact_button.disabled = true
+	mobile_interact_button.pressed.connect(_mobile_interact)
+	mobile_controls.add_child(mobile_interact_button)
+
+	var board_button := _make_mobile_button("Quadro", Vector2(1078, 24), Vector2(176, 60))
+	board_button.pressed.connect(_toggle_board)
+	mobile_controls.add_child(board_button)
+
+func _mobile_interact() -> void:
+	if current_focus == null:
+		return
+	if current_focus.has_method("activate_from_touch"):
+		current_focus.call("activate_from_touch")
+
 func _show_start_menu() -> void:
 	var continue_button = start_panel.find_child("ContinueButton", true, false)
 	if continue_button != null:
@@ -439,9 +485,14 @@ func _on_hotspot_focus(hotspot, focused: bool) -> void:
 	if focused:
 		current_focus = hotspot
 		prompt_label.text = "[E / A] Examinar — %s" % hotspot.display_title
+		if mobile_interact_button != null:
+			mobile_interact_button.text = "Examinar"
+			mobile_interact_button.disabled = false
 	elif current_focus == hotspot:
 		current_focus = null
 		prompt_label.text = "A/D ou analógico — mover • E/A — examinar • Tab/Y — quadro"
+		if mobile_interact_button != null:
+			mobile_interact_button.disabled = true
 
 func _on_evidence_activated(evidence_id: String) -> void:
 	var item := EvidenceDB.get_evidence(evidence_id)
@@ -582,9 +633,15 @@ func _on_marker_focus(marker, focused: bool) -> void:
 	if focused:
 		current_focus = marker
 		prompt_label.text = "[E / A] Reconstruir — %s" % marker.title_text
+		if mobile_interact_button != null:
+			mobile_interact_button.text = "Reconstruir"
+			mobile_interact_button.disabled = false
 	elif current_focus == marker:
 		current_focus = null
 		prompt_label.text = "RECONSTRUÇÃO INVESTIGATIVA • percorra as estações na ordem sustentada"
+		if mobile_interact_button != null:
+			mobile_interact_button.text = "Examinar"
+			mobile_interact_button.disabled = true
 
 func _on_reconstruction_activated(step_index: int) -> void:
 	if not GameState.timeline_solved:
@@ -703,8 +760,13 @@ func _status_display(status_code: String) -> String:
 
 func _pause_for_ui(paused_value: bool) -> void:
 	get_tree().paused = paused_value
+	if paused_value:
+		Input.action_release("move_left")
+		Input.action_release("move_right")
 	if investigator != null:
 		investigator.set_controls_enabled(not paused_value)
+	if mobile_controls != null:
+		mobile_controls.visible = not paused_value
 
 func _show_phase_banner(message: String = "ARQUIVO II — RASTRO DOCUMENTAL\nAcesso liberado. Siga à direita.") -> void:
 	phase_banner_label.text = message

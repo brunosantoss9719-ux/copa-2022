@@ -1,0 +1,91 @@
+name: Build Android
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Godot
+        run: |
+          curl -L -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.2-stable_linux.x86_64
+          sudo mv Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: Install export templates
+        run: |
+          curl -L -o templates.tpz "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz"
+          rm -rf /tmp/godot-templates
+          mkdir -p /tmp/godot-templates
+          unzip -q templates.tpz -d /tmp/godot-templates
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.7.2.stable"
+          cp -R /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/4.7.2.stable/"
+
+      - name: Configure Android SDK and Godot
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"             "platform-tools" "build-tools;36.1.0" "platforms;android-36"
+
+          mkdir -p "$HOME/.android"
+          keytool -keyalg RSA -genkeypair             -alias androiddebugkey             -keypass android             -keystore "$HOME/.android/debug.keystore"             -storepass android             -dname "CN=Android Debug,O=Android,C=US"             -validity 9999             -deststoretype PKCS12
+
+          mkdir -p "$HOME/.config/godot"
+          godot --headless --path . --editor --quit || true
+          SETTINGS="$(find "$HOME/.config/godot" -maxdepth 1 -name 'editor_settings-*.tres' | head -n 1)"
+          if [ -z "$SETTINGS" ]; then
+            SETTINGS="$HOME/.config/godot/editor_settings-4.7.tres"
+          fi
+          cat > "$SETTINGS" <<EOF
+          [gd_resource type="EditorSettings" format=3]
+
+          [resource]
+          export/android/android_sdk_path = "$ANDROID_HOME"
+          export/android/java_sdk_path = "$JAVA_HOME"
+          EOF
+
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$HOME/.android/debug.keystore" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey" >> "$GITHUB_ENV"
+          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android" >> "$GITHUB_ENV"
+
+      - name: Import and smoke
+        run: |
+          godot --headless --path . --import
+          godot --headless --path . --scene res://tests/Smoke.tscn
+
+      - name: Critical-path flow probe
+        run: godot --headless --path . --scene res://tests/FlowProbe.tscn
+
+      - name: Export Android APK
+        id: export
+        run: |
+          mkdir -p dist
+          SHORT_SHA="$(git rev-parse --short HEAD)"
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          APK="dist/Linha-de-Sombra-Copa-2022-Android-$SHORT_SHA.apk"
+          godot --headless --path . --export-debug "Android APK" "$APK"
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.1.0/apksigner" verify --verbose "$APK"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: linha-de-sombra-android-0.4.0-${{ steps.export.outputs.short_sha }}
+          path: dist/*.apk
+          if-no-files-found: error
+          retention-days: 14

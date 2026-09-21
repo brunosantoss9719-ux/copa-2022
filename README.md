@@ -23,3 +23,9 @@ O 0.2 acrescenta uma segunda ala investigativa com um puzzle de proveniência do
 - sem mecânica de execução ou otimização de violência política.
 
 Consulte `PROJECT_STATE.md` para retomada e `SOURCES.md` para o espelho do ledger factual.
+
+## Android
+
+A versão 0.4.0 inclui preset Android APK e controles touch em paisagem: esquerda, direita, examinar/reconstruir e quadro. Os painéis e seletores continuam sendo operados por toque nativo da UI.
+
+O CI gera um APK debug assinado para playtest fora da Play Store.

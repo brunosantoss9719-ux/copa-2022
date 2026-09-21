@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.4.0 — Android + contraditório
+- Controles touch em paisagem adicionados para Android.
+- Preset Android APK arm64 adicionado.
+- Workflow Build Android gera APK debug assinado para playtest.
+
 ## 0.4.0 — contraditório
 - Novo Arquivo IV, liberado após a individualização.
 - Quatro novas evidências: duas teses de defesa e dois resultados judiciais pareados.
