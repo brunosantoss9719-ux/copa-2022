@@ -3,7 +3,7 @@
 Thriller investigativo 2.5D em Godot sobre reconstrução documental de acontecimentos ligados aos nomes públicos “Copa 2022” e “Punhal Verde e Amarelo”.
 
 ## Estado
-Fatia vertical **0.4.0** em Godot 4.7.2-stable, GDScript, com Windows x86_64 como build de referência.
+Fatia vertical **0.4.1** em Godot 4.7.2-stable, GDScript, com Windows x86_64 como build de referência.
 
 ## Executar
 1. Instale Godot 4.7.2-stable.
@@ -26,6 +26,8 @@ Consulte `PROJECT_STATE.md` para retomada e `SOURCES.md` para o espelho do ledge
 
 ## Android
 
-A versão 0.4.0 inclui preset Android APK e controles touch em paisagem: esquerda, direita, examinar/reconstruir e quadro. Os painéis e seletores continuam sendo operados por toque nativo da UI.
+A versão 0.4.1 inclui preset Android APK e controles touch em paisagem: esquerda, direita, examinar/reconstruir e quadro. Os painéis e seletores continuam sendo operados por toque nativo da UI.
 
 O CI gera um APK debug assinado para playtest fora da Play Store.
+
+A 0.4.1 também adiciona MobileTouchProbe automatizado, assinatura debug persistente por cache do CI e publicação do APK em GitHub Release para download direto.

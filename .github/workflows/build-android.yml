@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -19,6 +19,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+
+      - name: Restore stable Android debug keystore
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: linha-de-sombra-android-debug-keystore-v1
 
       - name: Install Godot
         run: |
@@ -43,7 +49,9 @@ jobs:
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"             "platform-tools" "build-tools;36.1.0" "platforms;android-36"
 
           mkdir -p "$HOME/.android"
-          keytool -keyalg RSA -genkeypair             -alias androiddebugkey             -keypass android             -keystore "$HOME/.android/debug.keystore"             -storepass android             -dname "CN=Android Debug,O=Android,C=US"             -validity 9999             -deststoretype PKCS12
+          if [ ! -s "$HOME/.android/debug.keystore" ]; then
+            keytool -keyalg RSA -genkeypair               -alias androiddebugkey               -keypass android               -keystore "$HOME/.android/debug.keystore"               -storepass android               -dname "CN=Android Debug,O=Android,C=US"               -validity 9999               -deststoretype PKCS12
+          fi
 
           mkdir -p "$HOME/.config/godot"
           godot --headless --path . --editor --quit || true
@@ -71,6 +79,9 @@ jobs:
       - name: Critical-path flow probe
         run: godot --headless --path . --scene res://tests/FlowProbe.tscn
 
+      - name: Mobile touch probe
+        run: godot --headless --path . --scene res://tests/MobileTouchProbe.tscn
+
       - name: Export Android APK
         id: export
         run: |
@@ -85,7 +96,20 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: linha-de-sombra-android-0.4.0-${{ steps.export.outputs.short_sha }}
+          name: linha-de-sombra-android-0.4.1-${{ steps.export.outputs.short_sha }}
           path: dist/*.apk
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish direct APK release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHORT_SHA="${{ steps.export.outputs.short_sha }}"
+          TAG="android-0.4.1-$SHORT_SHA"
+          APK="dist/Linha-de-Sombra-Copa-2022-Android-$SHORT_SHA.apk"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$APK" --clobber
+          else
+            gh release create "$TAG" "$APK"               --target "$GITHUB_SHA"               --title "Linha de Sombra Android 0.4.1 ($SHORT_SHA)"               --notes "APK Android arm64 de playtest. Build automatizada, Smoke + FlowProbe + MobileTouchProbe + apksigner."
+          fi

@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.4.1 — entrega Android
+- Conteúdo factual e puzzles permanecem iguais à 0.4.0.
+- MobileTouchProbe testa movimento, interação contextual e abertura do quadro.
+- Build Android usa cache do debug keystore para manter a assinatura estável entre builds.
+- APK passa a ser publicado também como GitHub Release, além do artifact do Actions.
+- Android versionCode 5 / versionName 0.4.1.
+- CI Windows/Validate também executam MobileTouchProbe.
+- Validação/build serão registradas após a execução do CI.
+
+
 ## 0.4.0 — Android + contraditório
 - Controles touch em paisagem adicionados para Android.
 - Preset Android APK arm64 adicionado.

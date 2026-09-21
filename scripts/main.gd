@@ -47,7 +47,10 @@ var conclusion_text: Label
 var phase_banner: PanelContainer
 var phase_banner_label: Label
 var mobile_controls: Control
+var mobile_left_button: Button
+var mobile_right_button: Button
 var mobile_interact_button: Button
+var mobile_board_button: Button
 var current_focus = null
 
 func _enter_tree() -> void:
@@ -412,8 +415,10 @@ func _make_mobile_button(text_value: String, position_value: Vector2, size_value
 	button.add_theme_font_size_override("font_size", 24)
 	return button
 
-func _build_mobile_controls() -> void:
-	if not OS.has_feature("mobile"):
+func _build_mobile_controls(force := false) -> void:
+	if mobile_controls != null:
+		return
+	if not force and not OS.has_feature("mobile"):
 		return
 	prompt_label.visible = false
 	mobile_controls = Control.new()
@@ -422,23 +427,23 @@ func _build_mobile_controls() -> void:
 	mobile_controls.process_mode = Node.PROCESS_MODE_ALWAYS
 	ui_root.add_child(mobile_controls)
 
-	var left_button := _make_mobile_button("◀", Vector2(26, 596), Vector2(108, 96))
-	var right_button := _make_mobile_button("▶", Vector2(146, 596), Vector2(108, 96))
-	mobile_controls.add_child(left_button)
-	mobile_controls.add_child(right_button)
-	left_button.button_down.connect(func(): Input.action_press("move_left"))
-	left_button.button_up.connect(func(): Input.action_release("move_left"))
-	right_button.button_down.connect(func(): Input.action_press("move_right"))
-	right_button.button_up.connect(func(): Input.action_release("move_right"))
+	mobile_left_button = _make_mobile_button("◀", Vector2(26, 596), Vector2(108, 96))
+	mobile_right_button = _make_mobile_button("▶", Vector2(146, 596), Vector2(108, 96))
+	mobile_controls.add_child(mobile_left_button)
+	mobile_controls.add_child(mobile_right_button)
+	mobile_left_button.button_down.connect(func(): Input.action_press("move_left"))
+	mobile_left_button.button_up.connect(func(): Input.action_release("move_left"))
+	mobile_right_button.button_down.connect(func(): Input.action_press("move_right"))
+	mobile_right_button.button_up.connect(func(): Input.action_release("move_right"))
 
 	mobile_interact_button = _make_mobile_button("Examinar", Vector2(1066, 596), Vector2(188, 96))
 	mobile_interact_button.disabled = true
 	mobile_interact_button.pressed.connect(_mobile_interact)
 	mobile_controls.add_child(mobile_interact_button)
 
-	var board_button := _make_mobile_button("Quadro", Vector2(1078, 24), Vector2(176, 60))
-	board_button.pressed.connect(_toggle_board)
-	mobile_controls.add_child(board_button)
+	mobile_board_button = _make_mobile_button("Quadro", Vector2(1078, 24), Vector2(176, 60))
+	mobile_board_button.pressed.connect(_toggle_board)
+	mobile_controls.add_child(mobile_board_button)
 
 func _mobile_interact() -> void:
 	if current_focus == null:

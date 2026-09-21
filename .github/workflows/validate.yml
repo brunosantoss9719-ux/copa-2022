@@ -27,3 +27,5 @@ jobs:
         run: godot --headless --path . --scene res://tests/Smoke.tscn
       - name: Critical-path flow probe
         run: godot --headless --path . --scene res://tests/FlowProbe.tscn
+      - name: Mobile touch probe
+        run: godot --headless --path . --scene res://tests/MobileTouchProbe.tscn
